@@ -42,6 +42,7 @@ medipic-dev-*.log
 # uploads
 public/uploads/
 data/intake-sessions.json
+design-references/
 
 # env
 .env

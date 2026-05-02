@@ -68,11 +68,16 @@ button, a { transition: all 0.2s ease; }
   0%, 100% { box-shadow: 0 0 0 0 rgba(51, 165, 110, 0.22); }
   60% { box-shadow: 0 0 0 18px rgba(51, 165, 110, 0); }
 }
+@keyframes productFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--float-rotate, 0deg)); }
+  50% { transform: translate3d(0, -12px, 0) rotate(var(--float-rotate, 0deg)); }
+}
 
 .animate-fadeInUp  { animation: fadeInUp  0.65s cubic-bezier(0.16,1,0.3,1) both; }
 .animate-fadeIn    { animation: fadeIn    0.5s  ease-out both; }
 .animate-scaleIn   { animation: scaleIn   0.55s cubic-bezier(0.16,1,0.3,1) both; }
 .animate-cardLift  { animation: cardLift  5.6s ease-in-out infinite; }
+.animate-productFloat { animation: productFloat 6.2s ease-in-out infinite; }
 
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }

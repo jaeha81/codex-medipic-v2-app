@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "medipic — Online Medical Consultation",
-  description: "Online doctor consultation and prescription delivery. ¥0 consultation fee.",
+  title: "medipic — Online Care",
+  description: "Medipic online care landing and intake experience.",
 };
 
 export default function RootLayout({

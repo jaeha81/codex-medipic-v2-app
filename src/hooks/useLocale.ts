@@ -11,7 +11,7 @@ function getInitialLocale(): Locale {
   }
 
   const saved = localStorage.getItem(STORAGE_KEY)
-  return saved === 'en' || saved === 'ja' ? saved : 'en'
+  return saved === 'en' || saved === 'ja' || saved === 'ko' ? saved : 'en'
 }
 
 export function useLocale(): [Locale, (l: Locale) => void] {
