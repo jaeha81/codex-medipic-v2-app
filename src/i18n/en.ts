@@ -1,0 +1,72 @@
+export const en = {
+  nav: { logo: 'medipic', start: 'Get Started' },
+  hero: {
+    badge: '¥0 Consultation Fee',
+    title: 'Online Doctor,\nDelivered to Your Door',
+    subtitle: 'Licensed doctors, prescription medications, and home delivery — all from your phone.',
+    cta_line: 'Start with LINE',
+    cta_web: 'Start Now',
+    step1: '5-min intake',
+    step2: 'Doctor consult',
+    step3: 'Home delivery',
+  },
+  categories: {
+    title: 'Choose Your Category',
+    subtitle: 'Select the area you\'d like help with',
+    select: 'Select',
+  },
+  howItWorks: {
+    title: 'How It Works',
+    steps: [
+      { number: '01', title: 'Complete Intake', desc: 'Answer a short questionnaire in 5–8 minutes from your phone.' },
+      { number: '02', title: 'See a Doctor Online', desc: 'A licensed doctor reviews your answers and consults with you by video.' },
+      { number: '03', title: 'Prescription Delivered', desc: 'Your medication is prescribed and shipped directly to your door.' },
+    ],
+  },
+  trust: {
+    licensed: 'Licensed Doctors',
+    online: '100% Online',
+    pricing: 'Clear Pricing',
+    delivery: 'Home Delivery',
+  },
+  intake: {
+    chooseCategory: 'What would you like help with?',
+    chooseCategorySubtitle: 'Our licensed doctors can help with the following',
+    back: 'Back',
+    next: 'Next',
+    complete: 'Complete',
+    progress: 'completed',
+    typeAnswer: 'Type your answer...',
+    uploadHint: 'Tap to upload (JPG, PNG)',
+    uploading: 'Uploading...',
+    uploadError: 'Upload failed. Please try again.',
+    agree: 'I agree to the above',
+    height: 'Height (cm)',
+    weight: 'Weight (kg)',
+    bmi: 'BMI',
+    dobPlaceholder: 'YYYY-MM-DD',
+    contraindication_block_title: 'Treatment Not Available',
+    contraindication_block_back: 'Go Back',
+    contraindication_block_contact: 'Contact Support',
+  },
+  booking: {
+    title: 'Booking Confirmed!',
+    subtitle: 'Your intake is complete. Choose a time to meet with a doctor.',
+    slotLabel: 'Available slots',
+    confirm: 'Confirm via LINE',
+    note: 'A LINE confirmation will be sent once your booking is confirmed.',
+    slots: [
+      { label: 'Tomorrow', time: '10:00 AM' },
+      { label: 'Day after tomorrow', time: '2:00 PM' },
+      { label: 'In 3 days', time: '10:00 AM' },
+    ],
+  },
+  footer: {
+    tagline: '¥0 consultation / Pay for medication only',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Service',
+    contact: 'Contact',
+  },
+}
+
+export type Translations = typeof en

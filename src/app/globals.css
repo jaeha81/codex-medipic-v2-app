@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1D7A4A;
+  --color-primary-hover: #145F39;
+  --color-accent-green: #1D7A4A;
+  --color-accent-green-hover: #135735;
+  --color-accent-green-light: #E5F4EC;
+  --color-line-green: #07B53B;
+  --color-line-green-hover: #059A31;
+  --color-bg-warm: #EAF0E6;
+  --color-bg-section: #EEF2EC;
+  --color-accent-purple: #E8EFF8;
+  --color-accent-blue: #E3EDF9;
+  --color-accent-teal: #E2F0ED;
+  --color-warning: #FEF3C7;
+  --color-warning-border: #F0C070;
+  --color-danger: #FEE2E2;
+  --color-danger-border: #FCA5A5;
+  --color-gray-soft: #F0F3EF;
+  --color-dark: #0E2418;
+  --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', Arial, sans-serif;
+}
+
+:root {
+  --background: #F2F6F1;
+  --foreground: #111827;
+}
+
+
+body {
+  background:
+    radial-gradient(1100px 620px at 90% -10%, rgba(62, 153, 108, 0.18), transparent 58%),
+    radial-gradient(880px 520px at -10% 110%, rgba(35, 109, 74, 0.14), transparent 62%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, a { transition: all 0.2s ease; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes cardLift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -7px, 0); }
+}
+@keyframes flashSweep {
+  0%   { transform: translateX(-140%) skewX(-16deg); opacity: 0; }
+  12%  { opacity: 0.1; }
+  38%  { opacity: 0.42; }
+  52%  { opacity: 0; }
+  100% { transform: translateX(140%) skewX(-16deg); opacity: 0; }
+}
+@keyframes softPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(51, 165, 110, 0.22); }
+  60% { box-shadow: 0 0 0 18px rgba(51, 165, 110, 0); }
+}
+
+.animate-fadeInUp  { animation: fadeInUp  0.65s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-fadeIn    { animation: fadeIn    0.5s  ease-out both; }
+.animate-scaleIn   { animation: scaleIn   0.55s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-cardLift  { animation: cardLift  5.6s ease-in-out infinite; }
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+.will-animate { opacity: 0; }
+
+.shine-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shine-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    108deg,
+    transparent 24%,
+    rgba(255, 255, 255, 0.04) 38%,
+    rgba(255, 255, 255, 0.4) 46%,
+    rgba(255, 255, 255, 0.05) 54%,
+    transparent 70%
+  );
+  animation: flashSweep 6.5s linear infinite;
+  pointer-events: none;
+}
+
+.shine-card:hover::after {
+  animation-duration: 2.2s;
+}
+
+.pulse-ring {
+  animation: softPulse 2.4s ease-in-out infinite;
+}

@@ -1,0 +1,72 @@
+import type { Translations } from './en'
+
+export const ko = {
+  nav: { logo: 'medipic', start: '시작하기' },
+  hero: {
+    badge: '¥0 진료비',
+    title: '온라인 의사,\n집으로 배달',
+    subtitle: '공인 의사, 처방약, 택배 배송 — 모두 스마트폰 하나로.',
+    cta_line: 'LINE으로 시작',
+    cta_web: '지금 시작하기',
+    step1: '5분 문진',
+    step2: '의사 상담',
+    step3: '자택 배송',
+  },
+  categories: {
+    title: '진료 분야 선택',
+    subtitle: '도움받고 싶은 분야를 선택해주세요',
+    select: '선택',
+  },
+  howItWorks: {
+    title: '이용 방법',
+    steps: [
+      { number: '01', title: '문진 작성', desc: '스마트폰으로 5~8분 내에 짧은 설문을 작성하세요.' },
+      { number: '02', title: '온라인 진료', desc: '공인 의사가 답변을 검토하고 화상으로 상담을 진행합니다.' },
+      { number: '03', title: '처방약 배송', desc: '처방약이 처방되어 자택으로 직접 배송됩니다.' },
+    ],
+  },
+  trust: {
+    licensed: '공인 의사',
+    online: '100% 온라인',
+    pricing: '명확한 요금',
+    delivery: '자택 배송',
+  },
+  intake: {
+    chooseCategory: '어떤 도움이 필요하신가요?',
+    chooseCategorySubtitle: '공인 의사가 다음 분야를 지원합니다',
+    back: '뒤로',
+    next: '다음',
+    complete: '완료',
+    progress: '완료',
+    typeAnswer: '답변을 입력하세요...',
+    uploadHint: '탭하여 업로드 (JPG, PNG)',
+    uploading: '업로드 중...',
+    uploadError: '업로드에 실패했습니다. 다시 시도해 주세요.',
+    agree: '위 내용에 동의합니다',
+    height: '키 (cm)',
+    weight: '체중 (kg)',
+    bmi: 'BMI',
+    dobPlaceholder: 'YYYY-MM-DD',
+    contraindication_block_title: '치료 불가',
+    contraindication_block_back: '뒤로 가기',
+    contraindication_block_contact: '지원팀 문의',
+  },
+  booking: {
+    title: '예약 완료!',
+    subtitle: '문진이 완료되었습니다. 의사와 상담할 시간을 선택해주세요.',
+    slotLabel: '예약 가능 시간',
+    confirm: 'LINE으로 확인',
+    note: '예약이 확정되면 LINE으로 확인 메시지가 전송됩니다.',
+    slots: [
+      { label: '내일', time: '오전 10:00' },
+      { label: '모레', time: '오후 2:00' },
+      { label: '3일 후', time: '오전 10:00' },
+    ],
+  },
+  footer: {
+    tagline: '¥0 진료비 / 약품비만 결제',
+    privacy: '개인정보처리방침',
+    terms: '이용약관',
+    contact: '문의',
+  },
+} satisfies Translations

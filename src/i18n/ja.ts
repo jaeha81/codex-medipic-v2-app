@@ -1,0 +1,72 @@
+import type { Translations } from './en'
+
+export const ja: Translations = {
+  nav: { logo: 'medipic', start: '今すぐ始める' },
+  hero: {
+    badge: '診察料 ¥0',
+    title: 'オンライン診察、\nご自宅にお届け',
+    subtitle: '認定医師による診察・処方、そして自宅への配送。すべてスマホから。',
+    cta_line: 'LINEで始める',
+    cta_web: '今すぐ始める',
+    step1: '5分問診',
+    step2: '医師オンライン診察',
+    step3: '自宅に配送',
+  },
+  categories: {
+    title: 'カテゴリを選ぶ',
+    subtitle: 'ご相談したいお悩みを選んでください',
+    select: '選択する',
+  },
+  howItWorks: {
+    title: 'ご利用の流れ',
+    steps: [
+      { number: '01', title: '問診票に回答', desc: 'スマホから5〜8分で簡単に回答できます。' },
+      { number: '02', title: '医師とオンライン診察', desc: '認定医師があなたの回答を確認し、ビデオで診察します。' },
+      { number: '03', title: '処方薬をお届け', desc: '医師が処方した薬を自宅に直接お届けします。' },
+    ],
+  },
+  trust: {
+    licensed: '認定医師',
+    online: '完全オンライン',
+    pricing: '明確な料金',
+    delivery: '自宅配送',
+  },
+  intake: {
+    chooseCategory: 'どのようなお悩みですか？',
+    chooseCategorySubtitle: '以下のカテゴリから担当医師がサポートします',
+    back: '戻る',
+    next: '次へ',
+    complete: '完了',
+    progress: '完了',
+    typeAnswer: '入力してください...',
+    uploadHint: 'タップしてアップロード（JPG・PNG）',
+    uploading: 'アップロード中...',
+    uploadError: 'アップロードに失敗しました。再度お試しください。',
+    agree: '上記に同意する',
+    height: '身長 (cm)',
+    weight: '体重 (kg)',
+    bmi: 'BMI',
+    dobPlaceholder: '例：1990-04-15',
+    contraindication_block_title: 'この治療は対応できません',
+    contraindication_block_back: '戻る',
+    contraindication_block_contact: 'サポートに問い合わせる',
+  },
+  booking: {
+    title: '予約完了！',
+    subtitle: '問診が完了しました。診察日時を選んでください。',
+    slotLabel: '予約可能な時間帯',
+    confirm: 'LINEで予約を確定する',
+    note: '予約確定後、LINEに確認メッセージが届きます。',
+    slots: [
+      { label: '明日', time: '10:00' },
+      { label: '明後日', time: '14:00' },
+      { label: '3日後', time: '10:00' },
+    ],
+  },
+  footer: {
+    tagline: '診察料 ¥0 / 薬代のみのお支払い',
+    privacy: 'プライバシーポリシー',
+    terms: '利用規約',
+    contact: 'お問い合わせ',
+  },
+}

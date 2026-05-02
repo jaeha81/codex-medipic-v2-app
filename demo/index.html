@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>medipic Frontend Concept</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="shape shape-a"></div>
+    <div class="shape shape-b"></div>
+    <div class="grain-layer"></div>
+
+    <header class="topbar container" data-reveal>
+      <a class="brand" href="#">medipic</a>
+      <nav class="nav">
+        <a href="#">Treatment</a>
+        <a href="#">How it works</a>
+        <a href="#">Pricing</a>
+      </nav>
+      <a class="btn btn-ghost" href="#">Log in</a>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow">Digital Clinic Experience</p>
+          <h1>
+            Human tone design,
+            <span>clinical precision in every screen.</span>
+          </h1>
+          <p class="hero-text">
+            This concept shifts the frontend from AI-template visuals to an editorial and trust-focused language.
+            It uses restrained motion, real-life imagery, and a warm medical brand direction.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#">Start intake</a>
+            <a class="btn btn-outline" href="#">View flow</a>
+          </div>
+          <ul class="trust-list">
+            <li>Licensed doctors</li>
+            <li>Japan-ready process</li>
+            <li>Structured follow-up</li>
+          </ul>
+        </div>
+
+        <div class="hero-media" data-reveal>
+          <figure class="photo-card">
+            <img
+              src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=1100&q=80"
+              alt="Clinic consultation"
+            />
+            <figcaption>
+              <strong>Daily Care Dashboard</strong>
+              <span>Clear next steps, no visual noise.</span>
+            </figcaption>
+          </figure>
+
+          <article class="insight-card">
+            <p class="label">This week</p>
+            <div class="metric-row">
+              <p>
+                <span>Adherence</span>
+                <strong data-count="94" data-suffix="%">0</strong>
+              </p>
+              <p>
+                <span>Avg. response</span>
+                <strong data-count="16" data-suffix="m">0</strong>
+              </p>
+            </div>
+            <p class="note">
+              Care-team and patient updates are delivered in one visual surface.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="features container">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Why This Direction</p>
+          <h2>Built to feel premium, not generated</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card" data-reveal>
+            <h3>Editorial Typography</h3>
+            <p>
+              Newsreader headline pairing adds personality and clarity. Copy hierarchy is tuned for decision points.
+            </p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <h3>Natural Motion System</h3>
+            <p>
+              GSAP ScrollTrigger handles reveal timing. Movement is low amplitude and narrative, not decorative.
+            </p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <h3>Trust-Centered Visuals</h3>
+            <p>
+              Real clinical imagery and balanced neutral tones communicate reliability before conversion asks.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="journey container">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Patient Journey</p>
+          <h2>Three screens that drive conversion and confidence</h2>
+        </div>
+
+        <div class="journey-grid">
+          <article class="journey-card" data-reveal>
+            <p class="step">01</p>
+            <h3>Smart intake</h3>
+            <p>Adaptive questions reduce abandonment while preserving clinical quality.</p>
+          </article>
+          <article class="journey-card" data-reveal>
+            <p class="step">02</p>
+            <h3>Doctor review</h3>
+            <p>Structured summary and risk checks keep triage clear and compliant.</p>
+          </article>
+          <article class="journey-card" data-reveal>
+            <p class="step">03</p>
+            <h3>Follow-up care</h3>
+            <p>Medication reminders and response tracking continue after delivery.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="proof container" data-reveal>
+        <div class="proof-panel">
+          <div class="proof-copy">
+            <p class="eyebrow">Outcomes</p>
+            <h2>Sharper design translates to better action.</h2>
+            <p>
+              This page structure is optimized for clarity, trust, and conversion flow while staying visually distinct
+              from typical AI-generated themes.
+            </p>
+            <a class="btn btn-primary" href="#">Request final integration</a>
+          </div>
+          <div class="proof-media">
+            <img
+              src="https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?auto=format&fit=crop&w=900&q=80"
+              alt="Doctor with tablet"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer container" data-reveal>
+      <p>medipic frontend concept only</p>
+      <div>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
