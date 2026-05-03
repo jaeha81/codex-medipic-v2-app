@@ -120,12 +120,16 @@ function ProductObject({ product, large = false }: { product: CareProduct; large
             large
               ? index === 0
                 ? "inset-x-8 top-2 h-[245px] rotate-[-9deg] sm:h-[330px]"
-                : "bottom-6 right-2 h-36 w-36 rotate-[12deg] sm:h-44 sm:w-44"
+                : index === 1
+                  ? "bottom-6 right-2 h-36 w-36 rotate-[12deg] sm:h-44 sm:w-44"
+                  : "bottom-4 left-4 h-28 w-28 rotate-[-4deg] sm:h-36 sm:w-36"
               : index === 0
                 ? "inset-0"
-                : "bottom-0 right-0 h-16 w-16 translate-x-3 translate-y-2"
+                : index === 1
+                  ? "bottom-0 right-0 h-16 w-16 translate-x-3 translate-y-2"
+                  : "bottom-0 left-0 h-14 w-14 -translate-x-2 translate-y-1 rotate-[-6deg]"
           }`}
-          style={{ "--float-rotate": index === 0 ? "-9deg" : "12deg" } as CSSProperties}
+          style={{ "--float-rotate": index === 0 ? "-9deg" : index === 1 ? "12deg" : "-4deg" } as CSSProperties}
         >
           <Image
             src={image}
@@ -140,7 +144,6 @@ function ProductObject({ product, large = false }: { product: CareProduct; large
     </div>
   );
 }
-
 function HeroShowcase({ copy }: { copy: (typeof pageCopy)[Locale] }) {
   const featured = careProducts[0];
 

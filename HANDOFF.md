@@ -215,3 +215,385 @@ Expected result:
 - `localhost:3001` may point to a different local repo (`C:\codex\codex-medipic-app`) on this machine. Use `3002` for this OneDrive workspace.
 - In-app browser screenshot capture previously timed out on animated/image-heavy pages, but DOM checks, HTTP response, lint, and build were normal.
 - Do not add real product names, prices, efficacy claims, reviews, or doctor profiles until the user provides approved content.
+
+## 2026-05-03 category image refresh
+
+Confirmed user instruction: proceed with the four people-centered category images after preview.
+
+Updated project assets:
+
+```text
+public/images/medipic/sample/people/weight-person.png
+public/images/medipic/sample/people/hair-person.png
+public/images/medipic/sample/people/women-person.png
+public/images/medipic/sample/people/skin-person.png
+```
+
+Previous versions were preserved here:
+
+```text
+public/images/medipic/sample/people/backup-20260503-before-category-refresh/
+```
+
+No code changes were needed because `src/data/careProducts.ts` already references those same filenames for both the landing page and `/products/[id]` pages.
+
+Verification completed:
+
+```text
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+npm.cmd run lint -> passed with 11 existing warnings
+```
+
+Build note:
+
+- Next 16 still warns that the `middleware` file convention is deprecated and should move to `proxy` later.
+
+## 2026-05-03 product image completion
+
+User clarified that eight product reference images exist in:
+
+```text
+design-references/04-product-images/
+```
+
+The page previously referenced only six product images. Added the missing two images into the service asset path:
+
+```text
+public/images/medipic/sample/products/hair-lumigan.png
+public/images/medipic/sample/products/skin-cinal.png
+```
+
+Updated `src/data/careProducts.ts` so all eight product images are referenced:
+
+```text
+Weight care: weight-mounjaro.png, weight-rybelsus.png
+Hair support: hair-rogaine.png, hair-lumigan.png
+Women's health: women-equelle.png
+Skin care: skin-restore.png, skin-tranexamic.png, skin-cinal.png
+```
+
+Verification:
+
+```text
+product image references -> 8 total, all files exist
+npm.cmd run build -> passed
+```
+
+Follow-up layout fix:
+
+- `src/app/page.tsx`: adjusted shared product image stacking so a third image uses a separate lower-left position instead of overlapping the second image.
+- `src/app/products/[id]/page.tsx`: adjusted product detail image stacking the same way.
+
+Additional verification:
+
+```text
+/products/skin preview -> 200 response and visible in Codex browser
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+```
+
+## 2026-05-03 intake category route check
+
+User asked whether the first-page "Start consult" flow correctly maps to the right intake questions:
+
+```text
+체중관리 / 탈모 / 갱년기 / 의료스킨케어
+```
+
+Confirmed category question keys:
+
+```text
+common questions: 14
+weight: W-* 10 questions
+hair: H-* 8 questions
+menopause: M-* 7 questions
+skincare: S-* 7 questions
+```
+
+Found and fixed one route mismatch:
+
+```text
+Skin care product CTA was /intake/skin
+Correct route is /intake/skincare
+```
+
+Updated:
+
+```text
+src/data/careProducts.ts
+```
+
+Verification:
+
+```text
+/intake/weight -> 200, valid category
+/intake/hair -> 200, valid category
+/intake/menopause -> 200, valid category
+/intake/skincare -> 200, valid category
+/intake/skin -> Category not found, intentionally invalid
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+```
+
+## 2026-05-03 intake date and Korean language fixes
+
+User reported:
+
+```text
+문진시 년월일 선택반영이 안됨
+각 문진마다 우측 상단에 언어 눌렀을때 바뀌는게 있고 안바뀌는게 있음
+특히 한글은 안바뀜
+```
+
+Fixes:
+
+- `src/components/intake/QuestionCard.tsx`
+  - Fixed date picker value normalization so stored `YYYY-MM-DD` values match select values after render.
+  - Date questions now allow next only when a full `YYYY-MM-DD` value exists.
+  - Single-select options now use Korean option labels when locale is `ko`.
+  - Multi-select options now use Korean fallback labels from the new map.
+  - Removed stray arrow/mojibake characters from back/next buttons.
+- `src/data/questionKo.ts`
+  - Added Korean question text, hints, and option label mappings for common, weight, hair, menopause, and skincare intake questions.
+- `src/i18n/ko.ts`
+  - Replaced broken Korean UI copy with clean Korean strings.
+
+Browser verification:
+
+```text
+/intake/weight -> KR switch shows Korean category, question, date labels, progress, and next button
+/intake/weight -> after Next, region question and all options show Korean
+/intake/hair -> fresh date question shows year/month/day placeholders in Korean and Next disabled until a full date is selected
+```
+
+Command verification:
+
+```text
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+npm.cmd run lint -> passed with existing 11 warnings
+```
+
+## 2026-05-03 intake category language switcher visibility
+
+User reported that `/intake` top-right language controls only showed `KR`, while `EN/JP/KR` should all be visible.
+
+Cause:
+
+```text
+src/app/intake/page.tsx used LanguageSwitcher without variant="light".
+The default dark variant made inactive EN/JP text nearly invisible on the white header.
+```
+
+Fix:
+
+```text
+src/app/intake/page.tsx
+LanguageSwitcher locale={locale} onChange={setLocale} variant="light"
+```
+
+Verification:
+
+```text
+/intake browser snapshot shows EN, JP, KR buttons in the header
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+```
+
+## 2026-05-03 intake single-select auto-advance fix
+
+User reported:
+
+```text
+14번 문진부터 선택하면 다음을 안눌렀는데도 자동으로 넘어감
+```
+
+Cause:
+
+```text
+src/components/intake/QuestionCard.tsx
+handleSingleSelect called setTimeout(onNext, 200) after selecting a single-choice option.
+```
+
+Fix:
+
+```text
+Removed automatic onNext from handleSingleSelect.
+Single-choice questions now only select the answer and enable the Next button.
+Users must press Next explicitly to proceed.
+```
+
+Verification:
+
+```text
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+Browser check on /intake/skincare:
+  - selected a region option
+  - stayed on the same question
+  - Next button became enabled
+```
+
+## 2026-05-03 preview resume and intake stability fix
+
+User asked to reopen preview and continue the last work request.
+
+Preview:
+
+```text
+http://localhost:3002/
+```
+
+Current dev server:
+
+```text
+npm.cmd run dev -- --port 3002
+PID recorded in medipic-dev-3002.pid
+```
+
+Additional fixes:
+
+- `src/components/intake/QuestionCard.tsx`
+  - Date picker now keeps local year/month/day parts so fast consecutive select changes do not lose earlier parts.
+  - Date question `Next` enablement now works from the visible full date as well as the saved `YYYY-MM-DD` response.
+- `src/hooks/useIntake.ts`
+  - Session restore from `sessionStorage` now happens after mount, preventing server/client hydration mismatch on `/intake/[category]`.
+
+Browser verification:
+
+```text
+/intake/skincare
+  - date values 1990 / January / 1 selected
+  - Next became enabled
+  - after Next, region question appeared
+  - selecting Hokkaido stayed on the same question
+  - Next became enabled
+```
+
+Command verification:
+
+```text
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run build -> passed
+npm.cmd run lint -> passed with existing 11 warnings
+```
+
+Notes:
+
+- Use `http://localhost:3002`, not `http://127.0.0.1:3002`, for the dev preview. Next dev blocked HMR from `127.0.0.1` because it is not listed in `allowedDevOrigins`.
+- Next 16 still warns that `middleware` is deprecated and should move to `proxy` later.
+
+## 2026-05-03 LINE connect link on complete page
+
+User requested:
+
+```text
+실제 라인 연결접속링크도 넣어줘
+```
+
+Implemented:
+
+- `src/lib/lineLink.ts`
+  - Added `getLineConnectUrl()`.
+  - Priority:
+    1. `NEXT_PUBLIC_LINE_CONNECT_URL`
+    2. `NEXT_PUBLIC_LIFF_ID` -> `https://liff.line.me/{LIFF_ID}`
+    3. `https://line.me/R/`
+- `src/app/intake/[category]/complete/page.tsx`
+  - Added a LINE connection card below booking slots.
+  - Shows an external `LINE 연결하기 / LINEを開く / Open LINE` button when a URL is configured.
+  - Shows setup guidance when no URL is configured.
+- `.env.example`
+  - Added:
+
+```text
+NEXT_PUBLIC_LINE_CONNECT_URL=https://line.me/R/ti/p/YOUR_LINE_OFFICIAL_ACCOUNT_ID
+NEXT_PUBLIC_LIFF_ID=
+```
+
+Verification:
+
+```text
+npm.cmd run build -> passed
+npm.cmd run lint -> passed with existing 11 warnings
+npm.cmd run test:run -> passed, 69 tests
+```
+
+Browser note:
+
+- `/intake/weight/complete` shows the LINE connection card.
+- The button always opens a real LINE URL now.
+- Current local env does not include the real official account URL, so the fallback opens LINE generally.
+- To connect directly to the official account, add the real LINE official account URL to `.env.local` as `NEXT_PUBLIC_LINE_CONNECT_URL=...` and restart `npm.cmd run dev -- --port 3002`.
+
+## 2026-05-03 intake consent checkbox state fix
+
+User reported on `/intake/weight`:
+
+```text
+체중관리에 민감정보 처리에 동의가 안눌렀는데 체크되어있음 이런 오류 다 확인해봐
+```
+
+Cause:
+
+- `src/components/intake/QuestionCard.tsx` kept consent checkbox state in local React state initialized only once.
+- Because the same `QuestionCard` instance was reused across consecutive consent questions, checking the first consent question could visually carry into the next sensitive-information consent question even before the user clicked it.
+
+Fix:
+
+- `src/components/intake/QuestionCard.tsx`
+  - Removed local `consentChecked` state.
+  - Checkbox checked state is now derived directly from the current question response: `value === 'agreed'`.
+  - Toggle writes only the current question response.
+- `src/app/intake/[category]/page.tsx`
+  - Added `key={currentQuestion.id}` to `QuestionCard` so date, upload, height/weight, and other internal UI state cannot leak across question changes.
+
+Verification:
+
+```text
+npm.cmd run build -> passed
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run lint -> passed with existing 11 warnings
+```
+
+Browser note:
+
+- Direct browser reproduction up to the sensitive consent step is blocked by the required ID upload step and OS file picker automation limits.
+- Attempting to seed browser `sessionStorage` through a `javascript:` URL was rejected by browser security policy and was not bypassed.
+
+## 2026-05-03 complete page language cleanup
+
+User reported:
+
+```text
+마지막 문진 결과에는 영어/일본어/한국어가 없고 한국어만 있음
+```
+
+Fix:
+
+- `src/app/intake/[category]/complete/page.tsx`
+  - Replaced mojibake/hardcoded result-page strings with `COMPLETE_COPY` for `en`, `ja`, and `ko`.
+  - Cleaned LINE card, submission status, pricing card, and back-home labels.
+  - Header language switcher uses `variant="light"`.
+- `src/components/intake/PricingCard.tsx`
+  - Recreated clean component text.
+  - Added `ctaLabel` prop so the pricing CTA is no longer fixed Japanese text.
+  - Fixed yen symbol rendering to `¥`.
+
+Browser verification:
+
+```text
+/intake/weight/complete
+EN -> Booking Confirmed, Connect on LINE, Prescription Payment, Select this plan
+JP -> 予約完了！, LINEで相談を続ける, 処方薬のお支払い, このプランを選択する
+KR -> 예약 완료, LINE으로 상담 연결, 처방약 결제, 이 플랜 선택하기
+```
+
+Command verification:
+
+```text
+npm.cmd run build -> passed
+npm.cmd run test:run -> passed, 69 tests
+npm.cmd run lint -> passed with existing 11 warnings
+```

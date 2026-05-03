@@ -27,7 +27,7 @@ export default function IntakePage() {
           <Link href="/" className="text-[#1E60C8] font-bold text-xl tracking-tight">
             medipic
           </Link>
-          <LanguageSwitcher locale={locale} onChange={setLocale} />
+          <LanguageSwitcher locale={locale} onChange={setLocale} variant="light" />
         </div>
       </header>
 

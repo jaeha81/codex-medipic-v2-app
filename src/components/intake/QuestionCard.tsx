@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import type { Question } from '@/data/questions'
+import { optionLabelKo, questionHintKo, questionTextKo } from '@/data/questionKo'
 import { getActiveFlag } from '@/lib/contraindications'
 import { Button } from '@/components/ui/Button'
 import { ContraindicationBanner } from './ContraindicationBanner'
@@ -27,20 +28,20 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
   const [weightVal, setWeightVal] = useState(() =>
     typeof value === 'string' && value.includes('|') ? value.split('|')[1] : ''
   )
-  const [consentChecked, setConsentChecked] = useState(value === 'agreed')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  const [dateParts, setDateParts] = useState(() => parseDateValue(value))
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const questionText = locale === 'ja'
     ? question.textJa
     : locale === 'ko'
-      ? (question.textKo ?? question.textEn)
+      ? (question.textKo ?? questionTextKo[question.id] ?? question.textEn)
       : question.textEn
   const questionHint = locale === 'ja'
     ? question.hintJa
     : locale === 'ko'
-      ? (question.hintKo ?? question.hintEn)
+      ? (question.hintKo ?? questionHintKo[question.id] ?? question.hintEn)
       : question.hintEn
 
   const activeFlag = getActiveFlag(question, value)
@@ -53,13 +54,18 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
     if (question.type === 'height_weight') {
       return parseFloat(heightVal) > 0 && parseFloat(weightVal) > 0
     }
+    if (question.type === 'date') {
+      const dateValue = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+        ? value
+        : formatDateValue(dateParts)
+      return /^\d{4}-\d{2}-\d{2}$/.test(dateValue)
+    }
     if (question.type === 'multi') return Array.isArray(value) && value.length > 0
     return !!value
   })()
 
   function handleSingleSelect(optionValue: string) {
     onRespond(optionValue)
-    if (!getActiveFlag(question, optionValue)) setTimeout(onNext, 200)
   }
 
   function handleMultiToggle(optionValue: string) {
@@ -77,9 +83,7 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
   }
 
   function handleConsentToggle() {
-    const newVal = !consentChecked
-    setConsentChecked(newVal)
-    onRespond(newVal ? 'agreed' : '')
+    onRespond(value === 'agreed' ? '' : 'agreed')
   }
 
   // ── Height / Weight ──────────────────────────────────────────────────────
@@ -116,8 +120,11 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
 
   // ── Date (custom 3-select picker) ────────────────────────────────────────
   if (question.type === 'date') {
-    const dateStr = typeof value === 'string' ? value : ''
-    const [yyyy, mm, dd] = dateStr ? dateStr.split('-') : ['', '', '']
+    const savedDateParts = parseDateValue(value)
+    const visibleDateParts = dateParts.y || dateParts.m || dateParts.d ? dateParts : savedDateParts
+    const yyyy = visibleDateParts.y
+    const mm = visibleDateParts.m
+    const dd = visibleDateParts.d
     const currentYear = new Date().getFullYear()
     const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
     const days = Array.from({ length: 31 }, (_, i) => i + 1)
@@ -126,11 +133,15 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
       new Intl.DateTimeFormat(intlLocale, { month: 'long' }).format(new Date(2000, i, 1))
     )
     function handleDatePart(part: 'y' | 'm' | 'd', val: string) {
-      const y = part === 'y' ? val : (yyyy || '')
-      const m = part === 'm' ? val : (mm || '')
-      const day = part === 'd' ? val : (dd || '')
-      if (y && m && day) onRespond(`${y}-${m.padStart(2, '0')}-${day.padStart(2, '0')}`)
-      else onRespond(`${y}-${m}-${day}`)
+      setDateParts(prev => {
+        const next = {
+          y: part === 'y' ? val : prev.y,
+          m: part === 'm' ? val : prev.m,
+          d: part === 'd' ? val : prev.d,
+        }
+        onRespond(formatDateValue(next))
+        return next
+      })
     }
     const sel = 'flex-1 border-2 border-gray-200 rounded-xl px-3 py-3 text-base focus:border-primary focus:outline-none bg-white appearance-none cursor-pointer'
     return (
@@ -235,6 +246,7 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
 
   // ── Consent ──────────────────────────────────────────────────────────────
   if (question.type === 'consent') {
+    const consentChecked = value === 'agreed'
     return (
       <div className="space-y-6">
         <p className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug">{questionText}</p>
@@ -263,7 +275,7 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
         <p className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug">{questionText}</p>
         <div className="space-y-2">
           {question.options?.map(opt => {
-            const label = locale === 'ja' ? opt.labelJa : locale === 'ko' ? (opt.labelKo ?? opt.labelEn) : opt.labelEn
+            const label = locale === 'ja' ? opt.labelJa : locale === 'ko' ? (opt.labelKo ?? optionLabelKo[question.id]?.[opt.value] ?? opt.labelEn) : opt.labelEn
             const isSelected = selectedValues.includes(opt.value)
             return (
               <button key={opt.value} onClick={() => handleMultiToggle(opt.value)}
@@ -289,7 +301,7 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
       <p className="text-xl sm:text-2xl font-bold text-gray-900 leading-snug">{questionText}</p>
       <div className="space-y-2">
         {question.options?.map(opt => {
-          const label = locale === 'ja' ? opt.labelJa : opt.labelEn
+          const label = locale === 'ja' ? opt.labelJa : locale === 'ko' ? (opt.labelKo ?? optionLabelKo[question.id]?.[opt.value] ?? opt.labelEn) : opt.labelEn
           const isSelected = value === opt.value
           const thisFlag = getActiveFlag(question, opt.value)
           return (
@@ -319,16 +331,35 @@ export function QuestionCard({ question, value, locale, t, onRespond, onNext, on
   )
 }
 
+function parseDateValue(value: string | string[] | undefined) {
+  if (typeof value !== 'string') return { y: '', m: '', d: '' }
+
+  const [rawYear = '', rawMonth = '', rawDay = ''] = value.split('-')
+  return {
+    y: rawYear,
+    m: rawMonth ? String(Number(rawMonth)) : '',
+    d: rawDay ? String(Number(rawDay)) : '',
+  }
+}
+
+function formatDateValue(parts: { y: string; m: string; d: string }) {
+  if (parts.y && parts.m && parts.d) {
+    return `${parts.y}-${parts.m.padStart(2, '0')}-${parts.d.padStart(2, '0')}`
+  }
+
+  return `${parts.y}-${parts.m}-${parts.d}`
+}
+
 function ActionRow({ onBack, onNext, canProceed, isFirst, isLast, t }: {
   onBack: () => void; onNext: () => void; canProceed: boolean; isFirst: boolean; isLast: boolean; t: Translations
 }) {
   return (
     <div className="flex items-center gap-3 pt-2">
       {!isFirst && (
-        <Button variant="ghost" size="md" onClick={onBack}>← {t.intake.back}</Button>
+        <Button variant="ghost" size="md" onClick={onBack}>{t.intake.back}</Button>
       )}
       <Button variant="primary" size="md" onClick={onNext} disabled={!canProceed || undefined} className="ml-auto">
-        {isLast ? t.intake.complete : t.intake.next} →
+        {isLast ? t.intake.complete : t.intake.next}
       </Button>
     </div>
   )

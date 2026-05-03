@@ -28,24 +28,34 @@ function newSession(categoryId: CategoryId): IntakeSession {
 const STORAGE_KEY = 'medipic_intake_session'
 
 export function useIntake(categoryId: CategoryId, questions: Question[]) {
-  const [session, setSession] = useState<IntakeSession>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = sessionStorage.getItem(STORAGE_KEY)
-        if (stored) {
-          const parsed: IntakeSession = JSON.parse(stored)
-          if (parsed.categoryId === categoryId) return parsed
-        }
-      } catch { /* ignore */ }
-    }
-    return newSession(categoryId)
-  })
+  const [session, setSession] = useState<IntakeSession>(() => newSession(categoryId))
+  const [loadedCategory, setLoadedCategory] = useState<CategoryId | null>(null)
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    let nextSession = newSession(categoryId)
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY)
+      if (stored) {
+        const parsed: IntakeSession = JSON.parse(stored)
+        nextSession = parsed.categoryId === categoryId ? parsed : nextSession
+      }
+    } catch {
+      nextSession = newSession(categoryId)
+    }
+
+    const timer = window.setTimeout(() => {
+      setSession(nextSession)
+      setLoadedCategory(categoryId)
+    }, 0)
+
+    return () => window.clearTimeout(timer)
+  }, [categoryId])
+
+  useEffect(() => {
+    if (loadedCategory === categoryId) {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(session))
     }
-  }, [session])
+  }, [categoryId, loadedCategory, session])
 
   const currentQuestion = questions[session.currentQuestionIndex] ?? null
   const totalQuestions = questions.length

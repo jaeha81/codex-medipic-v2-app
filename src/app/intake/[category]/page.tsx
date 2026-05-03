@@ -137,6 +137,7 @@ export default function IntakeCategoryPage({ params }: PageProps) {
         ) : (
           <>
             <QuestionCard
+              key={currentQuestion.id}
               question={currentQuestion}
               locale={locale}
               t={t}

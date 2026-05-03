@@ -44,7 +44,10 @@ export const careProducts: CareProduct[] = [
       "헤어 관련 상담을 시작하기 전 기본 상태와 고민 범위를 정리하는 문진 경로입니다. 제품 이미지는 참고자료 기반의 보조 이미지이며, 상세 안내는 실제 검토 가능한 자료가 확정된 뒤 교체할 수 있습니다.",
     href: "/intake/hair",
     personImage: "/images/medipic/sample/people/hair-person.png",
-    productImages: ["/images/medipic/sample/products/hair-rogaine.png"],
+    productImages: [
+      "/images/medipic/sample/products/hair-rogaine.png",
+      "/images/medipic/sample/products/hair-lumigan.png",
+    ],
     productFocus: "object-[52%_50%]",
     position: "object-[52%_50%]",
     tone: "bg-[#e4eef0]",
@@ -74,11 +77,12 @@ export const careProducts: CareProduct[] = [
     shortBody: "과한 뷰티 광고처럼 보이지 않게 세로형 인물 배경과 여백을 중심으로 정리했습니다.",
     detailBody:
       "스킨케어 상담을 시작하기 전 피부 고민과 기본 정보를 정리하는 문진 경로입니다. 제품 이미지는 제공 자료를 기반으로 한 참고 슬롯이며, 실제 제품 설명은 승인된 문구가 있을 때 반영하는 구조입니다.",
-    href: "/intake/skin",
+    href: "/intake/skincare",
     personImage: "/images/medipic/sample/people/skin-person.png",
     productImages: [
       "/images/medipic/sample/products/skin-restore.png",
       "/images/medipic/sample/products/skin-tranexamic.png",
+      "/images/medipic/sample/products/skin-cinal.png",
     ],
     productFocus: "object-[50%_50%]",
     position: "object-[50%_52%]",

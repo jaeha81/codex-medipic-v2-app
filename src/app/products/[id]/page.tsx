@@ -104,9 +104,11 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                     className={`absolute animate-productFloat overflow-hidden rounded-xl bg-white/78 shadow-[0_28px_80px_rgba(0,0,0,0.26)] ${
                       index === 0
                         ? "left-1/2 top-12 h-[330px] w-[250px] -translate-x-1/2 rotate-[-8deg] sm:h-[380px] sm:w-[290px]"
-                        : "bottom-10 right-8 h-40 w-40 rotate-[12deg]"
+                        : index === 1
+                          ? "bottom-10 right-8 h-40 w-40 rotate-[12deg]"
+                          : "bottom-8 left-8 h-36 w-36 rotate-[-6deg]"
                     }`}
-                    style={{ "--float-rotate": index === 0 ? "-8deg" : "12deg" } as CSSProperties}
+                    style={{ "--float-rotate": index === 0 ? "-8deg" : index === 1 ? "12deg" : "-6deg" } as CSSProperties}
                   >
                     <Image src={image} alt="" fill sizes="320px" className={`object-cover ${product.productFocus}`} />
                     <div className="absolute inset-0 bg-white/8" />
