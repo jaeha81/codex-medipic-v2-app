@@ -50,6 +50,8 @@ export const ko = {
     contraindication_block_title: '치료 진행 불가',
     contraindication_block_back: '뒤로 가기',
     contraindication_block_contact: '지원팀 문의',
+    selectedOption: '선택한 제품',
+    selectedOptionHint: '해당 제품이 적합한지 클리닉에서 검토할 수 있도록 문진을 완료해 주세요.',
   },
   booking: {
     title: '예약 완료',

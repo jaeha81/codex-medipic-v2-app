@@ -1,30 +1,40 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import type { Locale } from '@/i18n'
+import { useEffect, useSyncExternalStore } from "react";
+import type { Locale } from "@/i18n";
 
-const STORAGE_KEY = 'medipic_locale'
+const STORAGE_KEY = "medipic_locale";
+const CHANGE_EVENT = "medipic-locale-change";
 
-function getInitialLocale(): Locale {
-  if (typeof window === 'undefined') {
-    return 'en'
-  }
-
-  const saved = localStorage.getItem(STORAGE_KEY)
-  return saved === 'en' || saved === 'ja' || saved === 'ko' ? saved : 'en'
+function isLocale(value: string | null): value is Locale {
+  return value === "en" || value === "ja" || value === "ko";
 }
 
 export function useLocale(): [Locale, (l: Locale) => void] {
-  const [locale, setLocaleState] = useState<Locale>(getInitialLocale)
+  const locale = useSyncExternalStore<Locale>(
+    (onStoreChange) => {
+      window.addEventListener("storage", onStoreChange);
+      window.addEventListener(CHANGE_EVENT, onStoreChange);
+      return () => {
+        window.removeEventListener("storage", onStoreChange);
+        window.removeEventListener(CHANGE_EVENT, onStoreChange);
+      };
+    },
+    () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return isLocale(saved) ? saved : "en";
+    },
+    () => "en",
+  );
 
   useEffect(() => {
-    document.documentElement.lang = locale
-    localStorage.setItem(STORAGE_KEY, locale)
-  }, [locale])
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   function setLocale(l: Locale) {
-    setLocaleState(l)
+    localStorage.setItem(STORAGE_KEY, l);
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   }
 
-  return [locale, setLocale]
+  return [locale, setLocale];
 }

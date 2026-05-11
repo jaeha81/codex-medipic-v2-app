@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
@@ -10,21 +11,28 @@ interface MockItem {
   quantity: number
 }
 
-// デモ用サンプル商品リスト
 const DEMO_ITEMS: MockItem[] = [
   {
-    name: 'クリニック診察料',
-    description: 'オンライン診察 / 処方サービス',
+    name: 'Prescription review',
+    description: 'Doctor-reviewed medication order',
     priceJPY: 3000,
     quantity: 1,
   },
   {
-    name: 'お薬配送料',
-    description: '全国一律送料',
+    name: 'Dispensing support',
+    description: 'Clinic coordination and dispatch guidance',
     priceJPY: 500,
     quantity: 1,
   },
 ]
+
+function CheckIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  )
+}
 
 function CheckoutContent() {
   const router = useRouter()
@@ -40,100 +48,98 @@ function CheckoutContent() {
   async function handlePay() {
     setLoading(true)
     if (isMock) {
-      // Mock: 即時完了
-      await new Promise((r) => setTimeout(r, 800))
+      await new Promise((resolve) => setTimeout(resolve, 800))
       setCompleted(true)
       setLoading(false)
       setTimeout(() => router.push('/'), 1500)
       return
     }
-    // TODO: 実際の Stripe Checkout へのリダイレクト
     setLoading(false)
   }
 
   if (completed) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F3F6F1] gap-4">
-        <div className="bg-white rounded-2xl shadow p-10 flex flex-col items-center gap-4 max-w-sm w-full mx-4">
-          <div className="text-5xl">✅</div>
-          <p className="text-xl font-bold text-gray-900">お支払いが完了しました</p>
-          <p className="text-sm text-gray-500">ホームページへ移動します…</p>
+      <div className="min-h-[100dvh] bg-[#fbfdf9] px-5 py-8 text-[#111111]">
+        <div className="mx-auto flex min-h-[calc(100dvh-4rem)] max-w-md flex-col justify-center">
+          <div className="rounded-[6px] border border-black/8 bg-white p-8 shadow-[0_18px_70px_rgba(17,17,17,0.10)]">
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-[#1d7a4a]/10 text-[#1d7a4a]">
+              <CheckIcon />
+            </div>
+            <h1 className="mt-6 text-2xl font-medium tracking-normal">Payment recorded</h1>
+            <p className="mt-3 text-sm leading-6 text-black/58">
+              This demo payment is complete. You will return to the home page shortly.
+            </p>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#F3F6F1]">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 px-6 py-4 flex items-center gap-3">
-        <span className="text-[#1E60C8] font-bold text-xl tracking-tight">MediPic</span>
-        <span className="text-gray-400 text-sm">/ お支払い</span>
+    <div className="min-h-[100dvh] bg-[#fbfdf9] text-[#111111]">
+      <header className="border-b border-black/8 px-5 py-4 sm:px-8">
+        <div className="mx-auto flex max-w-[1040px] items-center justify-between">
+          <Link href="/" className="text-xl font-semibold tracking-tight">
+            medipic.
+          </Link>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-black/42">checkout</span>
+        </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 py-8 flex flex-col gap-6">
-        {/* Mock Banner */}
-        {isMock && (
-          <div className="bg-amber-50 border border-amber-300 rounded-xl px-4 py-3 flex items-center gap-3">
-            <span className="text-amber-500 text-lg">⚠️</span>
-            <div>
-              <p className="text-amber-800 font-semibold text-sm">テスト決済モード</p>
-              <p className="text-amber-700 text-xs mt-0.5">
-                実際の請求は発生しません。テスト環境での動作確認用です。
-              </p>
+      <main className="mx-auto grid max-w-[1040px] gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[0.42fr_0.58fr] lg:py-14">
+        <section>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-black/42">Prescription payment</p>
+          <h1 className="mt-5 text-3xl font-medium leading-[1.04] tracking-normal sm:text-4xl">
+            Confirm the medication charge after doctor review.
+          </h1>
+          <p className="mt-5 max-w-sm text-sm leading-6 text-black/58">
+            Consultation remains free. Medication payment is shown here as a demo flow until the real payment provider is connected.
+          </p>
+          {isMock && (
+            <div className="mt-8 rounded-[6px] border border-[#c79a2f]/25 bg-[#fff8e6] px-4 py-3 text-sm leading-6 text-[#7a5a12]">
+              Demo session active. No real payment will be sent.
             </div>
-          </div>
-        )}
+          )}
+        </section>
 
-        {/* Order Summary */}
-        <section className="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col gap-4">
-          <h2 className="text-base font-bold text-gray-900">ご注文内容</h2>
-          <ul className="flex flex-col gap-3">
-            {DEMO_ITEMS.map((item, i) => (
-              <li key={i} className="flex items-start justify-between gap-4">
+        <section className="rounded-[6px] border border-black/8 bg-white p-5 shadow-[0_18px_70px_rgba(17,17,17,0.10)] sm:p-6">
+          <div className="flex items-center justify-between border-b border-black/8 pb-4">
+            <h2 className="text-base font-semibold">Order summary</h2>
+            <span className="text-xs text-black/42">{sessionId || 'pending session'}</span>
+          </div>
+
+          <ul className="divide-y divide-black/8">
+            {DEMO_ITEMS.map((item) => (
+              <li key={item.name} className="flex items-start justify-between gap-5 py-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                  <p className="text-sm font-medium">{item.name}</p>
+                  <p className="mt-1 text-xs leading-5 text-black/50">{item.description}</p>
                 </div>
-                <div className="text-right shrink-0">
-                  <p className="text-sm font-semibold text-gray-900">
-                    ¥{(item.priceJPY * item.quantity).toLocaleString()}
-                  </p>
-                  <p className="text-xs text-gray-400">×{item.quantity}</p>
+                <div className="shrink-0 text-right">
+                  <p className="text-sm font-semibold">JPY {(item.priceJPY * item.quantity).toLocaleString()}</p>
+                  <p className="mt-1 text-xs text-black/38">x{item.quantity}</p>
                 </div>
               </li>
             ))}
           </ul>
-          <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
-            <span className="text-sm font-bold text-gray-700">合計（税込）</span>
-            <span className="text-lg font-bold text-gray-900">¥{total.toLocaleString()}</span>
+
+          <div className="flex items-center justify-between border-t border-black/8 pt-5">
+            <span className="text-sm font-medium text-black/58">Total</span>
+            <span className="text-2xl font-semibold tracking-normal">JPY {total.toLocaleString()}</span>
           </div>
+
+          <button
+            onClick={handlePay}
+            disabled={loading}
+            className="mt-6 inline-flex w-full items-center justify-center rounded-[6px] bg-[#111111] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#2a261f] active:translate-y-px disabled:opacity-60"
+          >
+            {loading ? 'Processing...' : isMock ? 'Complete demo payment' : 'Payment provider pending'}
+          </button>
+
+          <p className="mt-4 text-center text-xs leading-5 text-black/42">
+            Real checkout should be connected through Stripe or another approved payment provider before production use.
+          </p>
         </section>
-
-        {/* Session ID (debug) */}
-        {isMock && (
-          <p className="text-xs text-gray-400 text-center">セッションID: {sessionId}</p>
-        )}
-
-        {/* CTA */}
-        <button
-          onClick={handlePay}
-          disabled={loading}
-          className="w-full bg-[#1E60C8] hover:bg-[#1650A8] disabled:opacity-60 text-white font-bold text-base rounded-2xl py-4 transition-colors duration-200 flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <>
-              <span className="animate-spin text-lg">⏳</span>
-              処理中…
-            </>
-          ) : (
-            '支払いを完了する'
-          )}
-        </button>
-
-        <p className="text-xs text-gray-400 text-center">
-          安全な決済は Stripe により保護されています
-        </p>
       </main>
     </div>
   )
@@ -143,8 +149,8 @@ export default function CheckoutPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#F3F6F1] flex items-center justify-center">
-          <p className="text-gray-400 text-sm">読み込み中…</p>
+        <div className="grid min-h-[100dvh] place-items-center bg-[#fbfdf9] text-sm text-black/42">
+          Loading checkout...
         </div>
       }
     >

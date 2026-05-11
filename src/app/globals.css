@@ -1,45 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1D7A4A;
-  --color-primary-hover: #145F39;
-  --color-accent-green: #1D7A4A;
-  --color-accent-green-hover: #135735;
-  --color-accent-green-light: #E5F4EC;
+  --color-primary: #111111;
+  --color-primary-hover: #2f2f2f;
+  --color-accent-green: #7eb892;
+  --color-accent-green-hover: #5f9c73;
+  --color-accent-green-light: #dff0e5;
   --color-line-green: #07B53B;
   --color-line-green-hover: #059A31;
-  --color-bg-warm: #EAF0E6;
-  --color-bg-section: #EEF2EC;
-  --color-accent-purple: #E8EFF8;
-  --color-accent-blue: #E3EDF9;
-  --color-accent-teal: #E2F0ED;
+  --color-bg-warm: #f6fbf7;
+  --color-bg-section: #eef7f1;
+  --color-accent-purple: #f1f6f1;
+  --color-accent-blue: #eef7f1;
+  --color-accent-teal: #dff0e5;
   --color-warning: #FEF3C7;
   --color-warning-border: #F0C070;
   --color-danger: #FEE2E2;
   --color-danger-border: #FCA5A5;
-  --color-gray-soft: #F0F3EF;
-  --color-dark: #0E2418;
-  --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', Arial, sans-serif;
+  --color-gray-soft: #f5f5f2;
+  --color-dark: #111111;
+  --font-sans: 'Work Sans', 'Noto Sans JP', 'Noto Sans KR', 'Avenir Next', Arial, sans-serif;
+  --font-mono: 'Space Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
 :root {
-  --background: #F2F6F1;
-  --foreground: #111827;
+  --background: #fbfdf9;
+  --foreground: #111111;
+  --versed-mint: #7eb892;
+  --versed-mint-soft: #dff0e5;
+  --versed-cream: #fbfdf9;
+  --versed-ink: #111111;
+  --versed-muted: rgba(17, 17, 17, 0.58);
+  --versed-line: rgba(17, 17, 17, 0.12);
 }
 
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  background:
-    radial-gradient(1100px 620px at 90% -10%, rgba(62, 153, 108, 0.18), transparent 58%),
-    radial-gradient(880px 520px at -10% 110%, rgba(35, 109, 74, 0.14), transparent 62%),
-    var(--background);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-button, a { transition: all 0.2s ease; }
+.versed-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.versed-surface {
+  border: 1px solid var(--versed-line);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 16px 48px rgba(17, 17, 17, 0.06);
+}
+
+.versed-button {
+  border-radius: 999px;
+  background: var(--versed-ink);
+  color: #fff;
+  font-weight: 700;
+}
+
+.versed-button:hover {
+  background: #2f2f2f;
+}
+
+.versed-mint-panel {
+  background: var(--versed-mint-soft);
+}
+
+.product-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(17, 17, 17, 0.34) rgba(255, 255, 255, 0.48);
+  scrollbar-gutter: stable;
+}
+
+.product-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.product-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.48);
+  border-radius: 999px;
+}
+
+.product-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(17, 17, 17, 0.34);
+  border-radius: 999px;
+}
+
+.product-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(17, 17, 17, 0.52);
+}
+
+button, a {
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1), color 0.24s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active,
+a:active {
+  transform: scale(0.98);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(21, 19, 15, 0.72);
+  outline-offset: 3px;
+}
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(28px); }
@@ -72,12 +146,22 @@ button, a { transition: all 0.2s ease; }
   0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--float-rotate, 0deg)); }
   50% { transform: translate3d(0, -12px, 0) rotate(var(--float-rotate, 0deg)); }
 }
+@keyframes productCarousel {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes productCardDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
 
 .animate-fadeInUp  { animation: fadeInUp  0.65s cubic-bezier(0.16,1,0.3,1) both; }
 .animate-fadeIn    { animation: fadeIn    0.5s  ease-out both; }
 .animate-scaleIn   { animation: scaleIn   0.55s cubic-bezier(0.16,1,0.3,1) both; }
 .animate-cardLift  { animation: cardLift  5.6s ease-in-out infinite; }
 .animate-productFloat { animation: productFloat 6.2s ease-in-out infinite; }
+.animate-productCarousel { animation: productCarousel 18s linear infinite; }
+.animate-productCardDrift { animation: productCardDrift 6.8s ease-in-out infinite; }
 
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
@@ -115,4 +199,15 @@ button, a { transition: all 0.2s ease; }
 
 .pulse-ring {
   animation: softPulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-productCarousel,
+  .animate-productFloat,
+  .animate-productCardDrift,
+  .animate-cardLift,
+  .pulse-ring,
+  .shine-card::after {
+    animation: none;
+  }
 }

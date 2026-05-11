@@ -1,74 +1,89 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useLocale } from '@/hooks/useLocale'
-import { en } from '@/i18n/en'
-import { ja } from '@/i18n/ja'
-import { ko } from '@/i18n/ko'
-import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
-import { CATEGORIES } from '@/data/categories'
+import Image from "next/image";
+import Link from "next/link";
+import { useLocale } from "@/hooks/useLocale";
+import { en } from "@/i18n/en";
+import { ja } from "@/i18n/ja";
+import { ko } from "@/i18n/ko";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { CATEGORIES } from "@/data/categories";
+import { careProducts } from "@/data/careProducts";
 
-const CATEGORY_IMAGES: Record<string, string> = {
-  weight:    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&q=80',
-  hair:      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80',
-  menopause: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=400&q=80',
-  skincare:  'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=400&q=80',
+function ArrowIcon() {
+  return (
+    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-5-5 5 5-5 5" />
+    </svg>
+  );
 }
 
 export default function IntakePage() {
-  const [locale, setLocale] = useLocale()
-  const t = locale === 'ja' ? ja : locale === 'ko' ? ko : en
+  const [locale, setLocale] = useLocale();
+  const t = locale === "ja" ? ja : locale === "ko" ? ko : en;
 
   return (
-    <div className="min-h-screen bg-[#F3F6F1] flex flex-col">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 px-6 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-[#1E60C8] font-bold text-xl tracking-tight">
-            medipic
+    <div className="min-h-[100dvh] bg-[#fbfdf9] text-[#111111]">
+      <header className="border-b border-black/8 bg-[#fbfdf9]/92 px-5 py-4 backdrop-blur-xl sm:px-8">
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between">
+          <Link href="/" className="text-xl font-semibold tracking-tight">
+            medipic.
           </Link>
           <LanguageSwitcher locale={locale} onChange={setLocale} variant="light" />
         </div>
       </header>
 
-      {/* Content */}
-      <main className="flex-1 max-w-2xl mx-auto w-full px-6 py-12">
-        <div className="text-center mb-10 animate-fadeInUp">
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
-            {t.intake.chooseCategory}
+      <main className="mx-auto grid max-w-[1180px] gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[0.36fr_0.64fr] lg:py-14">
+        <section className="lg:sticky lg:top-24 lg:self-start">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-black/42">medipic intake</p>
+          <h1 className="mt-5 text-3xl font-medium leading-[1.04] tracking-normal sm:text-4xl">
+            {locale === "en" ? "Choose your care path" : t.intake.chooseCategory}
           </h1>
-          <p className="text-gray-500">{t.intake.chooseCategorySubtitle}</p>
-        </div>
+          <p className="mt-5 max-w-sm text-sm leading-6 text-black/58">
+            {locale === "en"
+              ? "Select the area you want to start with. Each path continues into a focused medical intake."
+              : t.intake.chooseCategorySubtitle}
+          </p>
+        </section>
 
-        <div className="grid grid-cols-2 gap-4">
-          {CATEGORIES.map((cat, i) => {
-            const label = locale === 'ja' ? cat.labelJa : locale === 'ko' ? cat.labelKo : cat.labelEn
-            const subtitle = locale === 'ja' ? cat.subtitleJa : locale === 'ko' ? cat.subtitleKo : cat.subtitleEn
+        <section className="grid gap-4 sm:grid-cols-2">
+          {CATEGORIES.map((cat) => {
+            const product = careProducts.find((item) => item.id === cat.id);
+            const label = locale === "ja" ? cat.labelJa : locale === "ko" ? cat.labelKo : cat.labelEn;
+            const subtitle = locale === "ja" ? cat.subtitleJa : locale === "ko" ? cat.subtitleKo : cat.subtitleEn;
+
+            if (!product) return null;
 
             return (
               <Link
                 key={cat.id}
                 href={`/intake/${cat.id}`}
-                className="group relative rounded-2xl overflow-hidden block will-animate animate-scaleIn"
-                style={{ animationDelay: `${i * 70}ms` }}
+                className="group relative block min-h-[430px] overflow-hidden rounded-[6px] bg-white shadow-[0_18px_70px_rgba(17,17,17,0.10)]"
               >
-                <div className="aspect-[4/3] relative overflow-hidden">
-                  <img
-                    src={CATEGORY_IMAGES[cat.id]}
-                    alt={label}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col justify-end p-4">
-                    <p className="text-xs text-white/60 mb-0.5">{subtitle}</p>
-                    <p className="text-base font-bold text-white">{label}</p>
-                  </div>
+                <Image
+                  src={product.image}
+                  alt={label}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className={`object-cover ${product.imagePosition} transition duration-700 group-hover:scale-[1.035]`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/12 via-white/4 to-black/50" />
+                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-black/50">{product.number}</span>
+                  <span className="grid h-9 w-9 place-items-center rounded-full bg-white/82 text-black backdrop-blur transition group-hover:bg-black group-hover:text-white">
+                    <ArrowIcon />
+                  </span>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <p className="text-sm text-white/76">{subtitle}</p>
+                  <h2 className="mt-1 text-3xl font-medium tracking-normal">{label}</h2>
+                  <p className="mt-3 max-w-xs text-sm leading-5 text-white/78">{product.kicker}</p>
                 </div>
               </Link>
-            )
+            );
           })}
-        </div>
+        </section>
       </main>
     </div>
-  )
+  );
 }

@@ -1,375 +1,637 @@
- "use client";
+"use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
-import { careProducts, type CareProduct } from "@/data/careProducts";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { careProducts, type CareProduct, type ProductGalleryItem } from "@/data/careProducts";
+import { localizeCareProducts } from "@/data/careProductCopy";
 import { useLocale } from "@/hooks/useLocale";
+import { getLineConnectUrl } from "@/lib/lineLink";
 import type { Locale } from "@/i18n";
 
-const pageCopy: Record<
-  Locale,
-  {
-    navCta: string;
-    heroEyebrow: string;
-    heroTitle: string;
-    heroBody: string;
-    heroPrimary: string;
-    heroSecondary: string;
-    railEyebrow: string;
-    railTitle: string;
-    railBody: string;
-    gridEyebrow: string;
-    gridTitle: string;
-    viewProduct: string;
-    footer: string;
-  }
-> = {
-  ko: {
-    navCta: "상담 시작",
-    heroEyebrow: "Medipic online care",
-    heroTitle: "집에서 시작하는 조용한 의료 상담 경험",
-    heroBody:
-      "Medipic은 4가지 카테고리의 문진 흐름을 중심으로 구성됩니다. 제품명, 가격, 의료효과, 후기, 의사 정보는 확정 자료 없이 새로 작성하지 않았습니다.",
-    heroPrimary: "상담 시작",
-    heroSecondary: "카테고리 보기",
-    railEyebrow: "Care categories",
-    railTitle: "4가지 Medipic 상담 카테고리",
-    railBody: "카드는 제품 상세 페이지로 이동하고, 상세 페이지에서 문진으로 이어집니다.",
-    gridEyebrow: "Medipic care grid",
-    gridTitle: "사람 중심 배경 위에 제품을 더 명확하게 보여주는 구조",
-    viewProduct: "제품 보기",
-    footer:
-      "제품 이미지는 제공된 참고자료 기반의 시각 슬롯입니다. 실제 제품명, 가격, 의료효과, 후기, 의사 정보는 확정 자료 없이 새로 작성하지 않았습니다.",
-  },
+type HomeCopy = {
+  login: string;
+  join: string;
+  signUp: string;
+  email: string;
+  categories: string;
+  joinHelp: string;
+  line: string;
+  lineBlockEyebrow: string;
+  lineBlockTitle: string;
+  lineBlockButton: string;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  treatmentOptions: string;
+  productHint: (title: string) => string;
+  getStarted: string;
+  intake: string;
+  membershipTitle: string;
+  membershipSubtitle: string;
+  membershipBenefits: string[];
+  joinEyebrow: string;
+  footerAbout: string;
+  footerCore: string;
+  footerHelp: string;
+  footerIntro: string;
+  footerSupport: string;
+  footerPrivacy: string;
+  footerContact: string;
+};
+
+const uiCopy: Record<Locale, HomeCopy> = {
   en: {
-    navCta: "Start consult",
-    heroEyebrow: "Medipic online care",
-    heroTitle: "A calm online care experience that starts at home",
-    heroBody:
-      "Medipic is organized around four intake categories. Product names, prices, medical effects, reviews, and doctor information are not invented without approved source content.",
-    heroPrimary: "Start consult",
-    heroSecondary: "View categories",
-    railEyebrow: "Care categories",
-    railTitle: "Four Medipic care categories",
-    railBody: "Each card opens a product detail page, then continues into the matching intake flow.",
-    gridEyebrow: "Medipic care grid",
-    gridTitle: "A clearer product showcase over people-centered backgrounds",
-    viewProduct: "View product",
-    footer:
-      "Product images are visual slots based on provided references. Product names, prices, medical effects, reviews, and doctor information are not invented without approved content.",
+    login: "Login",
+    join: "Join medipic",
+    signUp: "Sign up",
+    email: "Email",
+    categories: "Care menu",
+    joinHelp: "Join & Help",
+    line: "Connect on LINE",
+    lineBlockEyebrow: "Start on LINE",
+    lineBlockTitle: "A simple guided intake for your concern.",
+    lineBlockButton: "LINE",
+    heroEyebrow: "medipic app",
+    heroTitle: "Your care journey, all in one place",
+    heroSubtitle: "Start with a private intake, review treatment options clearly, and continue care online with doctor guidance.",
+    treatmentOptions: "Treatment options",
+    productHint: (title) => `Tap a product image to open the ${title} detail page.`,
+    getStarted: "Get started",
+    intake: "Intake",
+    membershipTitle: "Get complete care in one membership",
+    membershipSubtitle: "Designed for women, from consultation and product review to follow-up guidance.",
+    membershipBenefits: [
+      "Personalized care plan",
+      "Women's health doctors online",
+      "LINE-based follow-up support",
+      "Post-review payment and delivery guidance",
+      "Follow-up review when needed",
+      "Easy refills for ongoing care",
+    ],
+    joinEyebrow: "Join medipic",
+    footerAbout: "About",
+    footerCore: "Core care",
+    footerHelp: "Help",
+    footerIntro: "How medipic works",
+    footerSupport: "Support",
+    footerPrivacy: "Privacy",
+    footerContact: "Contact",
   },
   ja: {
-    navCta: "相談を始める",
-    heroEyebrow: "Medipic online care",
-    heroTitle: "自宅から始める、静かなオンライン相談体験",
-    heroBody:
-      "Medipicは4つの相談カテゴリを中心に構成しています。商品名、価格、医療効果、口コミ、医師情報は、承認済みの原稿なしに新しく作成していません。",
-    heroPrimary: "相談を始める",
-    heroSecondary: "カテゴリを見る",
-    railEyebrow: "Care categories",
-    railTitle: "4つのMedipic相談カテゴリ",
-    railBody: "各カードから詳細ページへ進み、そこから該当する問診へ移動できます。",
-    gridEyebrow: "Medipic care grid",
-    gridTitle: "人を中心にした背景の上で、商品をより見やすく見せる構成",
-    viewProduct: "詳細を見る",
-    footer:
-      "商品画像は提供資料をもとにしたビジュアル枠です。商品名、価格、医療効果、口コミ、医師情報は、承認済み資料なしに新規作成していません。",
+    login: "ログイン",
+    join: "medipicを始める",
+    signUp: "登録",
+    email: "Email",
+    categories: "ケアメニュー",
+    joinHelp: "登録・ヘルプ",
+    line: "LINEで相談",
+    lineBlockEyebrow: "Start on LINE",
+    lineBlockTitle: "気になることを、かんたんな問診から始められます。",
+    lineBlockButton: "LINE",
+    heroEyebrow: "medipic app",
+    heroTitle: "相談からフォローまで、ひとつの場所で",
+    heroSubtitle: "プライベートな問診から始め、治療オプションを確認し、医師の案内に沿ってオンラインでケアを続けられます。",
+    treatmentOptions: "ケアオプション",
+    productHint: (title) => `${title}の詳細ページを見るには、商品画像を選択してください。`,
+    getStarted: "詳しく見る",
+    intake: "問診を始める",
+    membershipTitle: "相談、商品確認、フォローまでまとめて",
+    membershipSubtitle: "女性の健康相談に合わせて、問診、商品確認、LINEでの案内が続くように設計しています。",
+    membershipBenefits: [
+      "一人ひとりに合わせたケアプラン",
+      "女性の健康に詳しい医師のオンライン確認",
+      "LINEでのフォローアップ",
+      "処方と配送案内",
+      "必要に応じた調整",
+      "継続ケアの相談",
+    ],
+    joinEyebrow: "Join medipic",
+    footerAbout: "About",
+    footerCore: "Core care",
+    footerHelp: "Help",
+    footerIntro: "medipicの流れ",
+    footerSupport: "サポート",
+    footerPrivacy: "プライバシー",
+    footerContact: "お問い合わせ",
+  },
+  ko: {
+    login: "로그인",
+    join: "medipic 시작하기",
+    signUp: "가입",
+    email: "Email",
+    categories: "케어 메뉴",
+    joinHelp: "가입 및 도움말",
+    line: "LINE 상담",
+    lineBlockEyebrow: "Start on LINE",
+    lineBlockTitle: "고민에 맞춘 간단한 안내 문진으로 시작하세요.",
+    lineBlockButton: "LINE",
+    heroEyebrow: "medipic app",
+    heroTitle: "상담부터 사후관리까지 한 곳에서",
+    heroSubtitle: "비공개 문진으로 시작하고, 상품 정보를 확인한 뒤 의료진 검토를 거쳐 온라인 케어를 이어갑니다.",
+    treatmentOptions: "케어 옵션",
+    productHint: (title) => `${title} 상세페이지를 보려면 상품 이미지를 선택하세요.`,
+    getStarted: "상세 보기",
+    intake: "문진 시작",
+    membershipTitle: "상담, 상품 확인, 사후관리까지 한 번에",
+    membershipSubtitle: "여성 건강 고민에 맞춰 문진, 상품 검토, LINE 상담 안내가 이어지도록 구성했습니다.",
+    membershipBenefits: [
+      "개인 맞춤 케어 플랜",
+      "여성 건강 중심 온라인 의사 검토",
+      "LINE 기반 사후관리 지원",
+      "처방 및 비공개 배송 안내",
+      "필요 시 용량과 방향 조정",
+      "지속 관리를 위한 리필 상담",
+    ],
+    joinEyebrow: "medipic 시작",
+    footerAbout: "소개",
+    footerCore: "주요 케어",
+    footerHelp: "도움말",
+    footerIntro: "medipic 이용 흐름",
+    footerSupport: "지원",
+    footerPrivacy: "개인정보",
+    footerContact: "문의",
+  },
+};
+
+const socialLinks = [
+  { name: "Instagram", href: "https://www.instagram.com/" },
+  { name: "Facebook", href: "https://www.facebook.com/" },
+] as const;
+
+const complianceCopy: Record<Locale, { title: string; items: string[] }> = {
+  en: {
+    title: "Medical and legal notice",
+    items: [
+      "Medipic provides intake and care coordination information only. Diagnosis, prescription, treatment eligibility, and delivery guidance are decided by a licensed physician after review.",
+      "Online care may not be appropriate for every condition. If a physician determines that online consultation is unsuitable, in-person care or another medical institution may be recommended.",
+      "This site does not guarantee treatment effects, prescription availability, weight change, skin improvement, hair growth, or any specific outcome.",
+      "Emergency symptoms are not handled here. Use local emergency services or visit a medical institution immediately.",
+    ],
+  },
+  ja: {
+    title: "医療・法令に関する注意",
+    items: [
+      "Medipicは問診と案内情報を提供するサービスです。診断、処方、治療可否、配送案内は、医師の確認後に判断されます。",
+      "オンライン診療が適切でない場合があります。医師が不適切と判断した場合は、対面診療または他の医療機関の受診をご案内することがあります。",
+      "治療効果、処方可否、体重変化、肌改善、発毛、その他特定の結果を保証するものではありません。",
+      "緊急症状には対応していません。緊急時は救急窓口または医療機関を受診してください。",
+    ],
+  },
+  ko: {
+    title: "의료 및 법적 안내",
+    items: [
+      "Medipic은 문진과 케어 연결 정보를 제공하는 서비스입니다. 진단, 처방, 치료 가능 여부, 배송 안내는 의사 검토 후 결정됩니다.",
+      "온라인 상담이 모든 상태에 적합한 것은 아닙니다. 의사가 온라인 상담이 부적절하다고 판단하면 대면 진료 또는 다른 의료기관 방문을 안내할 수 있습니다.",
+      "치료 효과, 처방 가능 여부, 체중 변화, 피부 개선, 발모, 기타 특정 결과를 보장하지 않습니다.",
+      "응급 증상은 이 서비스에서 처리하지 않습니다. 응급 상황에서는 현지 응급 서비스 또는 의료기관을 즉시 이용해야 합니다.",
+    ],
   },
 };
 
 function ArrowIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="1.8"
-    >
+    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-5-5 5 5-5 5" />
     </svg>
   );
 }
 
-function Logo() {
+function MenuIcon() {
   return (
-    <Image
-      src="/images/medipic/logo-main.png"
-      alt="medipic"
-      width={335}
-      height={105}
-      priority
-      className="h-auto w-[126px] mix-blend-multiply sm:w-[150px]"
-    />
+    <span className="flex flex-col gap-1" aria-hidden="true">
+      <span className="block h-px w-4 bg-current" />
+      <span className="block h-px w-4 bg-current" />
+      <span className="block h-px w-4 bg-current" />
+    </span>
   );
 }
 
-function ProductObject({ product, large = false }: { product: CareProduct; large?: boolean }) {
+function CheckIcon() {
   return (
-    <div
-      className={`relative ${large ? "h-[330px] w-[270px] sm:h-[430px] sm:w-[340px]" : "h-28 w-28"} transition duration-500 group-hover:scale-[1.04]`}
-      aria-hidden="true"
-    >
-      {product.productImages.map((image, index) => (
-        <div
-          key={image}
-          className={`absolute animate-productFloat overflow-hidden rounded-xl bg-white/72 shadow-[0_24px_70px_rgba(0,0,0,0.24)] backdrop-blur ${
-            large
-              ? index === 0
-                ? "inset-x-8 top-2 h-[245px] rotate-[-9deg] sm:h-[330px]"
-                : index === 1
-                  ? "bottom-6 right-2 h-36 w-36 rotate-[12deg] sm:h-44 sm:w-44"
-                  : "bottom-4 left-4 h-28 w-28 rotate-[-4deg] sm:h-36 sm:w-36"
-              : index === 0
-                ? "inset-0"
-                : index === 1
-                  ? "bottom-0 right-0 h-16 w-16 translate-x-3 translate-y-2"
-                  : "bottom-0 left-0 h-14 w-14 -translate-x-2 translate-y-1 rotate-[-6deg]"
-          }`}
-          style={{ "--float-rotate": index === 0 ? "-9deg" : index === 1 ? "12deg" : "-4deg" } as CSSProperties}
+    <svg aria-hidden="true" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+    </svg>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
+      <path strokeLinecap="round" d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg aria-hidden="true" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.9">
+      <rect width="17" height="17" x="3.5" y="3.5" rx="4.5" />
+      <circle cx="12" cy="12" r="3.7" />
+      <path strokeLinecap="round" d="M17.5 6.7h.01" />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg aria-hidden="true" className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M13.6 21v-7.9h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5h1.7V3.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.4v3.1h2.8V21h3.4Z" />
+    </svg>
+  );
+}
+
+function SocialIcon({ name }: { name: (typeof socialLinks)[number]["name"] }) {
+  if (name === "Instagram") return <InstagramIcon />;
+  return <FacebookIcon />;
+}
+
+function TopNav({ locale, setLocale, copy, products }: { locale: Locale; setLocale: (locale: Locale) => void; copy: HomeCopy; products: CareProduct[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuItems = [
+    ...products.map((product) => ({ number: product.number, label: product.title, href: `#${product.id}` })),
+    { number: "05", label: copy.joinHelp, href: "#footer" },
+  ];
+
+  return (
+    <>
+      <header className="absolute inset-x-0 top-0 z-20">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-center px-5 py-5 sm:px-8">
+          <Link href="/" aria-label="Medipic home" className="text-3xl font-semibold tracking-[-0.05em] text-[#111111]">
+            medipic.
+          </Link>
+        </div>
+      </header>
+      <div className="fixed inset-x-0 top-0 z-50 pointer-events-none">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-5 sm:px-8">
+        <a
+          href="#care-menu"
+          onClick={(event) => {
+            event.preventDefault();
+            setIsOpen(true);
+          }}
+          className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/88 text-[#111111] shadow-[0_12px_36px_rgba(17,17,17,0.12)] backdrop-blur transition hover:bg-[#dff0e5]"
+          aria-label="Open care menu"
         >
-          <Image
-            src={image}
-            alt=""
-            fill
-            sizes={large ? "340px" : "120px"}
-            className={`object-cover ${product.productFocus}`}
-          />
-          <div className="absolute inset-0 bg-white/10" />
+          <MenuIcon />
+        </a>
+        <div className="pointer-events-auto flex items-center gap-2">
+          <Link href="/login" className="hidden rounded-full border border-black/10 bg-white/88 px-4 py-2 text-xs font-semibold text-black/70 shadow-[0_10px_28px_rgba(17,17,17,0.08)] backdrop-blur transition hover:bg-[#dff0e5] sm:inline-flex">
+            {copy.login}
+          </Link>
+          <div className="hidden sm:block">
+            <LanguageSwitcher locale={locale} onChange={setLocale} variant="light" />
+          </div>
+        </div>
+        </div>
+      </div>
+      {isOpen && (
+        <div className="fixed inset-0 z-[60] bg-[#dff0e5]/92 px-5 py-5 backdrop-blur-xl sm:px-8">
+          <div className="mx-auto flex max-w-[720px] items-center justify-between">
+            <span className="text-3xl font-semibold tracking-[-0.05em] text-[#111111]">medipic.</span>
+            <button type="button" onClick={() => setIsOpen(false)} className="grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white/88 text-[#111111]" aria-label="Close care menu">
+              <span aria-hidden="true" className="text-2xl leading-none">×</span>
+            </button>
+          </div>
+          <nav className="mx-auto mt-10 max-w-[720px]" aria-label={copy.categories}>
+            <p className="versed-label mb-3 text-center text-black/44">{copy.categories}</p>
+            <div className="overflow-hidden rounded-[4px] border border-black/12 bg-white/90">
+              {menuItems.map((item) => (
+                <a key={item.href} href={item.href} onClick={() => setIsOpen(false)} className="group flex items-center justify-between border-b border-black/10 px-5 py-5 text-left transition last:border-b-0 hover:bg-[#dff0e5]">
+                  <span>
+                    <span className="versed-label block text-black/38">{item.number}</span>
+                    <span className="block text-xl font-medium text-[#111111]">{item.label}</span>
+                  </span>
+                  <span className="grid h-9 w-9 place-items-center rounded-full border border-black/14 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
+                    <ArrowIcon />
+                  </span>
+                </a>
+              ))}
+            </div>
+          </nav>
+        </div>
+      )}
+    </>
+  );
+}
+
+function CategoryMenu({ products, copy }: { products: CareProduct[]; copy: HomeCopy }) {
+  return (
+    <nav id="care-menu" className="w-full max-w-lg scroll-mt-24" aria-label="Care categories">
+      <p className="versed-label mb-2 text-center text-black/44">{copy.categories}</p>
+      <div className="overflow-hidden rounded-[3px] border border-black/12 bg-white/88 backdrop-blur">
+        {products.map((product) => (
+          <Link key={product.id} href={`#${product.id}`} className="group flex items-center justify-between border-b border-black/10 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#dff0e5]">
+            <span>
+              <span className="versed-label block text-black/38">{product.number}</span>
+              <span className="block text-lg font-medium text-[#111111]">{product.title}</span>
+            </span>
+            <span className="grid h-8 w-8 place-items-center rounded-full border border-black/14 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
+              <ArrowIcon />
+            </span>
+          </Link>
+        ))}
+        <Link href="#footer" className="group flex items-center justify-between border-b border-black/10 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#dff0e5]">
+          <span>
+            <span className="versed-label block text-black/38">05</span>
+            <span className="block text-lg font-medium text-[#111111]">{copy.joinHelp}</span>
+          </span>
+          <span className="grid h-8 w-8 place-items-center rounded-full border border-black/14 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
+            <ArrowIcon />
+          </span>
+        </Link>
+      </div>
+    </nav>
+  );
+}
+
+function HeroVisual() {
+  const visuals = [
+    { src: "/images/medipic/redesign/menopause.png", alt: "Doctor consultation visual", pos: "object-[50%_28%]" },
+    { src: "/images/medipic/redesign/weightloss.png", alt: "Weight care visual", pos: "object-[52%_42%]" },
+    { src: "/images/medipic/sample/products/skin-tranexamic.png", alt: "Skincare product visual", pos: "object-center" },
+  ];
+
+  return (
+    <div className="mx-auto mt-9 grid w-full max-w-3xl grid-cols-[0.92fr_1.12fr_0.96fr] gap-2 sm:gap-3">
+      {visuals.map((item) => (
+        <div key={item.src} className="relative aspect-[4/5] overflow-hidden rounded-[4px] border border-black/10 bg-white">
+          <Image src={item.src} alt={item.alt} fill sizes="33vw" className={`object-cover ${item.pos}`} />
         </div>
       ))}
     </div>
   );
 }
-function HeroShowcase({ copy }: { copy: (typeof pageCopy)[Locale] }) {
-  const featured = careProducts[0];
 
+function HeroSection({ products, copy }: { products: CareProduct[]; copy: HomeCopy }) {
   return (
-    <section className="mx-auto max-w-[1500px] px-5 pt-5 sm:px-8">
-      <div className="relative min-h-[760px] overflow-hidden rounded-lg bg-[#26331f] text-white shadow-[0_34px_100px_rgba(20,28,17,0.24)]">
-        <Image
-          src={featured.personImage}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className={`object-cover ${featured.position} opacity-48`}
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_67%_10%,rgba(215,244,106,0.55),transparent_24%),linear-gradient(115deg,rgba(7,15,7,0.92),rgba(38,51,31,0.45)_48%,rgba(255,255,255,0.08))]" />
-        <div className="absolute -right-24 top-14 h-72 w-72 rounded-full bg-[#d7f46a]/30 blur-3xl" />
-
-        <div className="relative z-10 grid min-h-[760px] items-center gap-8 px-6 py-10 lg:grid-cols-[0.44fr_0.56fr] lg:px-14">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/62">{copy.heroEyebrow}</p>
-            <h1 className="mt-4 max-w-xl text-5xl font-semibold leading-[0.92] tracking-normal sm:text-7xl">
-              {copy.heroTitle}
-            </h1>
-            <p className="mt-6 max-w-md text-sm leading-6 text-white/76">
-              {copy.heroBody}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/intake"
-                className="inline-flex items-center gap-2 rounded-full bg-[#d7f46a] px-5 py-3 text-sm font-bold text-[#17210f] hover:bg-[#e5ff78]"
-              >
-                {copy.heroPrimary}
-                <ArrowIcon />
-              </Link>
-              <a
-                href="#care-grid"
-                className="inline-flex items-center gap-2 rounded-full border border-white/24 bg-white/12 px-5 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/18"
-              >
-                {copy.heroSecondary}
-              </a>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <Link
-              href={`/products/${featured.id}`}
-              className="group relative grid min-h-[470px] w-full max-w-[560px] place-items-center overflow-hidden rounded-lg border border-white/12 bg-white/10 p-6 backdrop-blur-md"
-            >
-              <div className="absolute inset-x-10 top-8 h-36 rotate-[-12deg] bg-[#d7f46a]/60 blur-2xl" />
-              <ProductObject product={featured} large />
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold tracking-[0.18em] text-white/62">FEATURED CATEGORY</p>
-                  <p className="mt-1 text-3xl font-semibold">{featured.title}</p>
-                </div>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#d7f46a] text-[#17210f]">
-                  <ArrowIcon />
-                </span>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProductRail({ copy }: { copy: (typeof pageCopy)[Locale] }) {
-  return (
-    <section className="mx-auto max-w-[1500px] px-5 py-5 sm:px-8">
-      <div className="rounded-lg bg-[#26331f] px-4 py-5 text-white sm:px-6">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">{copy.railEyebrow}</p>
-            <h2 className="mt-1 text-2xl font-semibold">{copy.railTitle}</h2>
-          </div>
-          <p className="hidden max-w-sm text-xs leading-5 text-white/58 sm:block">
-            {copy.railBody}
-          </p>
-        </div>
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          {careProducts.map((product) => (
-            <Link
-              key={product.id}
-              href={`/products/${product.id}`}
-              className="group min-w-[230px] overflow-hidden rounded-lg bg-white/14 p-3 backdrop-blur transition hover:-translate-y-1 hover:bg-white/20"
-            >
-              <div className="relative h-44 overflow-hidden rounded-md bg-white/18">
-                <Image
-                  src={product.personImage}
-                  alt=""
-                  fill
-                  sizes="230px"
-                  className={`object-cover ${product.position} opacity-52`}
-                />
-                <div className="absolute inset-0 bg-black/22" />
-                <div className="absolute inset-0 grid place-items-center">
-                  <ProductObject product={product} />
-                </div>
-              </div>
-              <div className="mt-3 flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold text-white/54">{product.number}</p>
-                  <p className="mt-1 text-lg font-semibold">{product.title}</p>
-                </div>
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#d7f46a] text-[#17210f]">
-                  <ArrowIcon />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CategoryCard({ product, viewProduct }: { product: CareProduct; viewProduct: string }) {
-  return (
-    <article
-      id={product.id}
-      className={`group relative min-h-[680px] overflow-hidden rounded-lg ${product.tone} shadow-[0_24px_80px_rgba(28,32,26,0.14)]`}
-    >
-      <Image
-        src={product.personImage}
-        alt=""
-        fill
-        sizes="(max-width: 1024px) 100vw, 50vw"
-        className={`object-cover ${product.position} transition duration-700 group-hover:scale-[1.025]`}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/58" />
-      <div className="absolute inset-x-0 top-0 flex items-start justify-between p-5 sm:p-6">
-        <div className="rounded-full bg-white/78 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-[#171717] backdrop-blur">
-          {product.number}
-        </div>
-        <div className="text-right text-[11px] font-semibold tracking-[0.22em] text-white drop-shadow">
-          MEDIPIC CARE
-        </div>
-      </div>
-
-      <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-        <div className="mb-5 max-w-[26rem]">
-          <p className="text-sm font-semibold tracking-[0.22em] text-white/88 drop-shadow">
-            {product.jpLabel}
-          </p>
-          <h2 className="mt-2 text-4xl font-semibold leading-none text-white drop-shadow sm:text-5xl">
-            {product.title}
-          </h2>
-          <p className="mt-4 max-w-[24rem] text-sm leading-6 text-white/88 drop-shadow">
-            {product.shortBody}
-          </p>
-        </div>
-        <div className="flex items-end justify-between gap-4">
-          <Link href={`/products/${product.id}`} className="group/product">
-            <ProductObject product={product} />
-          </Link>
-          <Link
-            href={`/products/${product.id}`}
-            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/45 bg-white/22 px-4 py-2 text-xs font-semibold text-white backdrop-blur hover:bg-white/30"
-          >
-            {viewProduct}
+    <section className="relative min-h-[100dvh] overflow-hidden bg-[#dff0e5]">
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-[1440px] flex-col items-center justify-center px-5 pb-12 pt-28 text-center sm:px-8">
+        <p className="versed-label text-black/48">{copy.heroEyebrow}</p>
+        <h1 className="mt-6 max-w-3xl text-4xl font-medium leading-[0.98] tracking-[-0.03em] text-[#111111] text-balance sm:text-5xl lg:text-[3.35rem]">
+          {copy.heroTitle}
+        </h1>
+        <p className="mt-5 max-w-[34ch] text-sm leading-7 text-black/64 sm:max-w-xl sm:text-[15px]">{copy.heroSubtitle}</p>
+        <div className="mt-7">
+          <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
+            {copy.join}
             <ArrowIcon />
           </Link>
         </div>
+        <div className="hidden w-full md:block">
+          <HeroVisual />
+        </div>
+        <div className="mt-8 flex w-full justify-center md:mt-10">
+          <CategoryMenu products={products} copy={copy} />
+        </div>
       </div>
-    </article>
+    </section>
+  );
+}
+
+function ProductSlideCard({ product, item, index }: { product: CareProduct; item: ProductGalleryItem; index: number }) {
+  return (
+    <Link href={`/products/${product.id}`} style={{ animationDelay: `${index * 160}ms` }} className="animate-productCardDrift group relative shrink-0 basis-[74%] snap-start overflow-hidden rounded-[4px] border border-black/10 bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_48px_rgba(17,17,17,0.14)] sm:basis-[44%] lg:basis-[30%]" aria-label={`${item.name} detail`}>
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[3px] bg-[#f6fbf7]">
+        <Image src={item.image} alt={`${item.name} product image`} fill sizes="(max-width: 768px) 72vw, 28vw" className="object-contain object-center p-2 transition duration-500 group-hover:scale-[1.03]" />
+      </div>
+      <div className="flex items-end justify-between gap-4 px-1 pb-1 pt-4">
+        <span>
+          <span className="block text-base font-semibold tracking-[-0.02em] text-[#111111]">{item.name}</span>
+          <span className="mt-1 block text-xs leading-5 text-black/58">{item.caption}</span>
+        </span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/12 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
+          <ArrowIcon />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+function ProductSlider({ product, copy }: { product: CareProduct; copy: HomeCopy }) {
+  return (
+    <div className="mx-auto mt-20 w-full max-w-4xl lg:mt-28">
+      <div className="mb-5 text-center">
+        <p className="versed-label text-black/44">{copy.treatmentOptions}</p>
+        <p className="mt-2 text-sm leading-6 text-black/58">{copy.productHint(product.title)}</p>
+      </div>
+      <div className="product-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-6 sm:-mx-8 sm:px-8" aria-label={copy.treatmentOptions} tabIndex={0}>
+        {product.gallery.map((item, index) => (
+          <ProductSlideCard key={item.name} product={product} item={item} index={index} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LineStartBlock({ copy }: { copy: HomeCopy }) {
+  return (
+    <div className="mt-12 flex w-full max-w-4xl justify-center px-5 pb-4 pt-8 text-center sm:px-8 lg:mt-16">
+      <div className="max-w-xl">
+        <p className="versed-label text-black/42">{copy.lineBlockEyebrow}</p>
+        <p className="mx-auto mt-5 max-w-[28ch] text-3xl font-medium leading-[1.08] tracking-[-0.03em] text-[#111111] text-balance sm:text-4xl">
+          {copy.lineBlockTitle}
+        </p>
+        <div className="mt-7 flex flex-col items-center gap-3">
+          <a href={getLineConnectUrl()} className="inline-flex min-w-32 items-center justify-center rounded-full bg-[#07B53B] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(7,181,59,0.24)] hover:bg-[#069b34]">
+            {copy.lineBlockButton}
+          </a>
+          <span className="text-xs font-medium leading-5 text-black/44">{copy.line}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CareSection({ product, copy }: { product: CareProduct; copy: HomeCopy }) {
+  return (
+    <section id={product.id} className="relative mx-3 min-h-[128dvh] scroll-mt-20 overflow-hidden rounded-[4px] bg-[#fbfdf9] sm:mx-6 lg:min-h-[132dvh]">
+      <Image src={product.image} alt={`${product.title} care visual`} fill sizes="100vw" className={`object-cover ${product.imagePosition}`} />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,253,249,0.78),rgba(251,253,249,0.18)_34%,rgba(251,253,249,0.82)_72%,rgba(251,253,249,0.96))]" />
+      <div className="relative z-10 mx-auto flex min-h-[128dvh] max-w-[1440px] flex-col items-center px-5 pb-16 pt-[16dvh] text-center sm:px-8 lg:min-h-[132dvh] lg:pb-20 lg:pt-[18dvh]">
+        <p className="versed-label text-black/46">{product.title}</p>
+        <h2 className="mt-5 max-w-2xl text-3xl font-medium leading-[1.03] tracking-[-0.03em] text-[#111111] text-balance sm:text-4xl lg:text-[2.9rem]">
+          {product.kicker}
+        </h2>
+        <p className="mt-6 max-w-xl text-sm leading-7 text-black/66 sm:text-[15px]">{product.tagline}</p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link href={`/products/${product.id}`} className="inline-flex items-center gap-3 rounded-full bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
+            {copy.getStarted}
+            <ArrowIcon />
+          </Link>
+          <Link href={product.href} className="inline-flex items-center gap-3 rounded-full border border-black/15 bg-white/80 px-6 py-3.5 text-sm font-semibold text-black/72 backdrop-blur transition hover:bg-[#dff0e5]">
+            {copy.intake}
+          </Link>
+        </div>
+        <ProductSlider product={product} copy={copy} />
+        <LineStartBlock copy={copy} />
+      </div>
+    </section>
+  );
+}
+
+function MembershipPanel({ copy }: { copy: HomeCopy }) {
+  return (
+    <div className="rounded-[4px] border border-black/10 bg-white p-5 sm:p-7">
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { src: "/images/medipic/redesign/menopause.png", alt: "Doctor visual", pos: "object-[50%_24%]" },
+          { src: "/images/medipic/redesign/weightloss.png", alt: "Weight care visual", pos: "object-[52%_42%]" },
+          { src: "/images/medipic/sample/products/women-equelle.png", alt: "Care product visual", pos: "object-center" },
+        ].map((item) => (
+          <div key={item.src} className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-[#f6fbf7]">
+            <Image src={item.src} alt={item.alt} fill sizes="220px" className={`object-cover ${item.pos}`} />
+          </div>
+        ))}
+      </div>
+      <div className="mt-7 text-center">
+        <h3 className="text-2xl font-medium leading-[1.05] tracking-[-0.02em] text-[#111111] text-balance sm:text-3xl">{copy.membershipTitle}</h3>
+        <p className="mt-3 text-sm leading-6 text-black/58">{copy.membershipSubtitle}</p>
+      </div>
+      <div className="mt-6 divide-y divide-black/10">
+        {copy.membershipBenefits.map((benefit) => (
+          <div key={benefit} className="flex items-center justify-between py-3 text-sm text-black/72">
+            <span>{benefit}</span>
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-[#dff0e5] text-[#111111]">
+              <CheckIcon />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FooterAccordion({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+  return (
+    <details className="group border-b border-[#111111] py-4">
+      <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-[#111111] [&::-webkit-details-marker]:hidden">
+        <span>{title}</span>
+        <span className="transition group-open:rotate-45">
+          <PlusIcon />
+        </span>
+      </summary>
+      <div className="grid gap-3 pb-2 pt-4 text-sm font-medium text-black/58">
+        {links.map((link) => (
+          <Link key={link.href} href={link.href} className="w-fit hover:text-[#111111]">
+            {link.label}
+          </Link>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+function FooterBlock({ copy, products, locale }: { copy: HomeCopy; products: CareProduct[]; locale: Locale }) {
+  const legal = complianceCopy[locale] ?? complianceCopy.en;
+  const accordions = [
+    {
+      title: copy.footerAbout,
+      links: [
+        { label: copy.footerIntro, href: "/" },
+        { label: copy.join, href: "/signup" },
+      ],
+    },
+    {
+      title: copy.footerCore,
+      links: products.map((product) => ({ label: product.title, href: `#${product.id}` })),
+    },
+    {
+      title: copy.footerHelp,
+      links: [
+        { label: copy.footerSupport, href: "/intake" },
+        { label: copy.footerPrivacy, href: "/signup" },
+        { label: copy.footerContact, href: "/intake/weight/complete" },
+      ],
+    },
+  ];
+
+  return (
+    <footer id="footer" className="mt-16 max-w-xl scroll-mt-8 text-left">
+      <Link href="/" className="text-3xl font-semibold tracking-[-0.05em] text-[#111111]" aria-label="Medipic home">
+        medipic
+      </Link>
+      <form action="/signup" className="mt-9 flex items-end gap-4 border-b border-[#111111] pb-3">
+        <label className="sr-only" htmlFor="footer-email">
+          {copy.email}
+        </label>
+        <input
+          id="footer-email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          placeholder={copy.email}
+          className="min-w-0 flex-1 bg-transparent text-lg text-[#111111] outline-none placeholder:text-black/38"
+        />
+        <button type="submit" className="versed-label shrink-0 text-[#111111] hover:opacity-60">
+          {copy.signUp}
+        </button>
+      </form>
+      <div className="mt-5 flex items-center gap-4">
+        {socialLinks.map((social) => (
+          <a key={social.name} href={social.href} aria-label={social.name} className="text-[#111111] hover:opacity-62">
+            <SocialIcon name={social.name} />
+          </a>
+        ))}
+      </div>
+      <div className="mt-14 border-t border-[#111111]">
+        {accordions.map((item) => (
+          <FooterAccordion key={item.title} title={item.title} links={item.links} />
+        ))}
+      </div>
+      <section className="mt-10 border-t border-black/18 pt-5">
+        <h3 className="versed-label text-black/52">{legal.title}</h3>
+        <ul className="mt-4 grid gap-2 text-xs leading-5 text-black/56">
+          {legal.items.map((item) => (
+            <li key={item}>- {item}</li>
+          ))}
+        </ul>
+      </section>
+    </footer>
+  );
+}
+
+function JoinSection({ copy, products, locale }: { copy: HomeCopy; products: CareProduct[]; locale: Locale }) {
+  return (
+    <section className="relative min-h-[100dvh] bg-[#fbfdf9]">
+      <div className="mx-auto grid min-h-[100dvh] max-w-[1440px] items-center gap-8 px-5 py-24 sm:px-8 lg:grid-cols-[0.5fr_0.5fr]">
+        <MembershipPanel copy={copy} />
+        <div className="text-center lg:text-left">
+          <p className="versed-label text-black/42">{copy.joinEyebrow}</p>
+          <h2 className="mt-6 max-w-xl text-3xl font-medium leading-[1.04] tracking-[-0.03em] text-[#111111] text-balance sm:text-4xl">{copy.heroTitle}</h2>
+          <p className="mt-7 max-w-xl text-base leading-7 text-black/62">{copy.heroSubtitle}</p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
+            <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
+              {copy.join}
+              <ArrowIcon />
+            </Link>
+            <Link href="/intake/weight/complete" className="inline-flex items-center gap-3 rounded-full border border-black/15 bg-white px-6 py-3.5 text-sm font-semibold text-black/72 transition hover:bg-[#dff0e5]">
+              {copy.line}
+            </Link>
+          </div>
+          <FooterBlock copy={copy} products={products} locale={locale} />
+        </div>
+      </div>
+    </section>
   );
 }
 
 export default function HomePage() {
   const [locale, setLocale] = useLocale();
-  const copy = pageCopy[locale] ?? pageCopy.en;
+  const t = uiCopy[locale] ?? uiCopy.en;
+  const localizedProducts = localizeCareProducts(careProducts, locale);
 
   return (
-    <main className="min-h-screen bg-[#f6f3ed] text-[#171717]">
-      <header className="sticky top-0 z-40 border-b border-black/5 bg-[#f6f3ed]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-5 py-4 sm:px-8">
-          <Link href="/" aria-label="Medipic home">
-            <Logo />
-          </Link>
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Care categories">
-            {careProducts.map((product) => (
-              <a
-                key={product.id}
-                href={`#${product.id}`}
-                className="text-xs font-semibold uppercase tracking-[0.16em] text-black/48 hover:text-black"
-              >
-                {product.title}
-              </a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher locale={locale} onChange={setLocale} variant="light" />
-            <Link
-              href="/intake"
-              className="hidden items-center gap-2 rounded-full bg-[#171717] px-4 py-2 text-xs font-semibold text-white hover:bg-black sm:inline-flex sm:px-5 sm:py-2.5"
-            >
-              {copy.navCta}
-              <ArrowIcon />
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <HeroShowcase copy={copy} />
-      <ProductRail copy={copy} />
-
-      <section id="care-grid" className="mx-auto max-w-[1500px] px-5 pb-8 sm:px-8">
-        <div className="mb-5 max-w-3xl">
-          <p className="text-sm font-semibold tracking-[0.2em] text-black/48">{copy.gridEyebrow}</p>
-          <h2 className="mt-2 text-4xl font-semibold leading-tight tracking-normal sm:text-6xl">
-            {copy.gridTitle}
-          </h2>
-        </div>
-        <div className="grid gap-5 lg:grid-cols-2">
-          {careProducts.map((product) => (
-            <CategoryCard key={product.id} product={product} viewProduct={copy.viewProduct} />
-          ))}
-        </div>
-      </section>
-
-      <footer className="mx-auto max-w-[1500px] px-5 pb-10 sm:px-8">
-        <div className="border-t border-black/10 pt-6 text-xs leading-5 text-black/54">
-          {copy.footer}
-        </div>
-      </footer>
+    <main className="bg-[#fbfdf9] text-[#111111]">
+      <TopNav locale={locale} setLocale={setLocale} copy={t} products={localizedProducts} />
+      <HeroSection products={localizedProducts} copy={t} />
+      <div className="space-y-8 bg-[#fbfdf9] py-8 sm:space-y-12 sm:py-12">
+        {localizedProducts.map((product) => (
+          <CareSection key={product.id} product={product} copy={t} />
+        ))}
+      </div>
+      <JoinSection copy={t} products={localizedProducts} locale={locale} />
     </main>
   );
 }

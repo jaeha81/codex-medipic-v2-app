@@ -1,8 +1,7 @@
 'use client'
 
 import { use, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale } from '@/hooks/useLocale'
 import { useIntake } from '@/hooks/useIntake'
 import { en } from '@/i18n/en'
@@ -25,6 +24,7 @@ interface PageProps {
 export default function IntakeCategoryPage({ params }: PageProps) {
   const { category } = use(params)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [locale, setLocale] = useLocale()
   const t = locale === 'ja' ? ja : locale === 'ko' ? ko : en
 
@@ -68,11 +68,12 @@ export default function IntakeCategoryPage({ params }: PageProps) {
     : locale === 'ko'
       ? categoryData.labelKo
       : categoryData.labelEn
+  const selectedProduct = searchParams.get('product')
 
   return (
-    <div className="min-h-screen bg-[#F3F6F1] flex flex-col">
+    <div className="min-h-screen bg-[#fbfdf9] flex flex-col text-[#111111]">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-10">
+      <header className="border-b border-black/8 bg-[#fbfdf9]/92 px-4 py-3">
         <div className="max-w-2xl mx-auto">
           {/* Top row: back + category + language */}
           <div className="flex items-center justify-between mb-2.5">
@@ -103,8 +104,17 @@ export default function IntakeCategoryPage({ params }: PageProps) {
 
       {/* Question */}
       <main className="flex-1 max-w-2xl mx-auto w-full px-6 py-10">
+        {selectedProduct && (
+          <div className="mb-5 rounded-[6px] border border-[#111111]/10 bg-white px-5 py-4 shadow-[0_18px_60px_rgba(17,17,17,0.08)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">{t.intake.selectedOption}</p>
+            <p className="mt-1 text-base font-semibold text-gray-900">{selectedProduct}</p>
+            <p className="mt-1 text-sm leading-5 text-gray-500">
+              {t.intake.selectedOptionHint}
+            </p>
+          </div>
+        )}
         {hasBlock ? (
-          <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-6 space-y-4">
+          <div className="rounded-[6px] border border-red-200 bg-red-50 p-6 space-y-4">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
                 <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

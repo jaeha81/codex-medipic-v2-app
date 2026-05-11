@@ -1,96 +1,154 @@
+export type CareProductId = "weight" | "hair" | "menopause" | "skincare";
+
 export type CareProduct = {
-  id: string;
+  id: CareProductId;
+  legacyIds?: string[];
   number: string;
   title: string;
-  jpLabel: string;
+  navLabel: string;
+  kicker: string;
+  tagline: string;
   shortBody: string;
   detailBody: string;
   href: string;
-  personImage: string;
-  productImages: string[];
-  productFocus: string;
-  position: string;
-  tone: string;
+  image: string;
+  imagePosition: string;
   accent: string;
+  softAccent: string;
+  benefits: string[];
+  gallery: ProductGalleryItem[];
+};
+
+export type ProductGalleryItem = {
+  name: string;
+  caption: string;
+  image: string;
 };
 
 export const careProducts: CareProduct[] = [
   {
     id: "weight",
     number: "01",
-    title: "Weight care",
-    jpLabel: "からだの相談",
-    shortBody: "상담 전 단계에서 필요한 정보를 차분하게 정리하고, 문진으로 바로 이어지는 카테고리입니다.",
+    title: "Weight Loss",
+    navLabel: "Weight",
+    kicker: "A lighter way forward.",
+    tagline: "Doctor-guided weight care designed to help women take the next step with confidence.",
+    shortBody: "A simple online path for weight care, from intake to follow-up.",
     detailBody:
-      "체중 관리 상담을 시작하기 전 현재 상태와 생활 패턴을 정리하는 문진 경로입니다. 제품 이미지는 제공된 참고자료를 기반으로 한 시각 슬롯이며, 실제 처방 가능 여부와 안내 내용은 문진 이후 검토 흐름에서 다룹니다.",
+      "Doctor-guided weight care designed to help women take the next step with confidence. Start with a focused intake, continue through online support, and keep the next action clear.",
     href: "/intake/weight",
-    personImage: "/images/medipic/sample/people/weight-person.png",
-    productImages: [
-      "/images/medipic/sample/products/weight-mounjaro.png",
-      "/images/medipic/sample/products/weight-rybelsus.png",
+    image: "/images/medipic/redesign/weightloss.png",
+    imagePosition: "object-[52%_42%]",
+    accent: "#111111",
+    softAccent: "#f3efe8",
+    benefits: ["Personalized care plan", "Women's health doctors online", "Easy refills for ongoing care"],
+    gallery: [
+      {
+        name: "Mounjaro",
+        caption: "Doctor-reviewed weight care option",
+        image: "/images/medipic/sample/products/weight-mounjaro.png",
+      },
+      {
+        name: "Rybelsus",
+        caption: "Oral GLP-1 care discussion",
+        image: "/images/medipic/sample/products/weight-rybelsus.png",
+      },
     ],
-    productFocus: "object-[50%_52%]",
-    position: "object-[56%_52%]",
-    tone: "bg-[#e8ece0]",
-    accent: "#d7f46a",
   },
   {
     id: "hair",
     number: "02",
-    title: "Hair support",
-    jpLabel: "髪のケア",
-    shortBody: "개인적인 고민을 부담 없이 시작할 수 있도록 밝고 깨끗한 톤으로 구성했습니다.",
+    title: "Hair",
+    navLabel: "Hair",
+    kicker: "Thicker. Stronger. Yours.",
+    tagline:
+      "Personalized hair support for women, combining doctor-guided care with a clear plan for fuller, stronger-looking hair.",
+    shortBody: "A calm, guided path for hair and scalp concerns.",
     detailBody:
-      "헤어 관련 상담을 시작하기 전 기본 상태와 고민 범위를 정리하는 문진 경로입니다. 제품 이미지는 참고자료 기반의 보조 이미지이며, 상세 안내는 실제 검토 가능한 자료가 확정된 뒤 교체할 수 있습니다.",
+      "Personalized hair support for women, combining doctor-guided care with a clear plan for fuller, stronger-looking hair. The experience keeps the image, message, and action centered.",
     href: "/intake/hair",
-    personImage: "/images/medipic/sample/people/hair-person.png",
-    productImages: [
-      "/images/medipic/sample/products/hair-rogaine.png",
-      "/images/medipic/sample/products/hair-lumigan.png",
+    image: "/images/medipic/redesign/hair.png",
+    imagePosition: "object-[50%_45%]",
+    accent: "#111111",
+    softAccent: "#f2eee8",
+    benefits: ["Hair thinning intake", "Doctor-guided care", "Follow-up support online"],
+    gallery: [
+      {
+        name: "Rogaine",
+        caption: "Hair density support",
+        image: "/images/medipic/sample/products/hair-rogaine.png",
+      },
+      {
+        name: "Lumigan",
+        caption: "Targeted growth support",
+        image: "/images/medipic/sample/products/hair-lumigan.png",
+      },
     ],
-    productFocus: "object-[52%_50%]",
-    position: "object-[52%_50%]",
-    tone: "bg-[#e4eef0]",
-    accent: "#b9e9ed",
   },
   {
-    id: "women",
+    id: "menopause",
+    legacyIds: ["women"],
     number: "03",
-    title: "Women's health",
-    jpLabel: "女性の毎日",
-    shortBody: "병원 같은 긴장감보다 생활 속 상담 장면을 우선해 편안한 신뢰감을 만들었습니다.",
+    title: "Menopause",
+    navLabel: "Menopause",
+    kicker: "Care through every change.",
+    tagline:
+      "Pill, PMS, menopause, and HRT support designed for long-term women's health guidance.",
+    shortBody: "A discreet online flow for hormonal changes, PMS, and menopause concerns.",
     detailBody:
-      "여성 건강 상담을 시작하기 전 컨디션과 증상 흐름을 정리하는 문진 경로입니다. 제품 이미지는 제공된 시각 자료를 작게 연결한 것이며, 가격이나 효과 문구는 확정 자료 없이 작성하지 않았습니다.",
+      "Pill, PMS, menopause, and HRT support designed for long-term women's health guidance. The page keeps the tone soft, readable, and centered on trust.",
     href: "/intake/menopause",
-    personImage: "/images/medipic/sample/people/women-person.png",
-    productImages: ["/images/medipic/sample/products/women-equelle.png"],
-    productFocus: "object-[50%_50%]",
-    position: "object-[53%_52%]",
-    tone: "bg-[#e7f0ec]",
-    accent: "#cce8da",
+    image: "/images/medipic/redesign/menopause.png",
+    imagePosition: "object-[50%_44%]",
+    accent: "#111111",
+    softAccent: "#f2eee8",
+    benefits: ["PMS and menopause support", "Pill and HRT review path", "Long-term follow-up guidance"],
+    gallery: [
+      {
+        name: "Equelle",
+        caption: "Menopause and hormonal balance support",
+        image: "/images/medipic/sample/products/women-equelle.png",
+      },
+    ],
   },
   {
-    id: "skin",
+    id: "skincare",
+    legacyIds: ["skin"],
     number: "04",
-    title: "Skin care",
-    jpLabel: "肌の相談",
-    shortBody: "과한 뷰티 광고처럼 보이지 않게 세로형 인물 배경과 여백을 중심으로 정리했습니다.",
+    title: "Medical Skincare",
+    navLabel: "Skincare",
+    kicker: "Clearer skin, clinically guided.",
+    tagline:
+      "Medical skincare support for spots, dullness, acne, and skin concerns, guided by doctors and tailored to your skin.",
+    shortBody: "Clinical skincare guidance without a noisy beauty-commerce feel.",
     detailBody:
-      "스킨케어 상담을 시작하기 전 피부 고민과 기본 정보를 정리하는 문진 경로입니다. 제품 이미지는 제공 자료를 기반으로 한 참고 슬롯이며, 실제 제품 설명은 승인된 문구가 있을 때 반영하는 구조입니다.",
+      "Medical skincare support for spots, dullness, acne, and skin concerns, guided by doctors and tailored to your skin. The page emphasizes clean photography, short copy, and a direct start action.",
     href: "/intake/skincare",
-    personImage: "/images/medipic/sample/people/skin-person.png",
-    productImages: [
-      "/images/medipic/sample/products/skin-restore.png",
-      "/images/medipic/sample/products/skin-tranexamic.png",
-      "/images/medipic/sample/products/skin-cinal.png",
+    image: "/images/medipic/redesign/medicalskincare.png",
+    imagePosition: "object-[50%_44%]",
+    accent: "#111111",
+    softAccent: "#f5efeb",
+    benefits: ["Acne and spots", "Brightening concerns", "Doctor-guided skin plan"],
+    gallery: [
+      {
+        name: "Cinal",
+        caption: "Tone and clarity support",
+        image: "/images/medipic/sample/products/skin-cinal.png",
+      },
+      {
+        name: "Restore",
+        caption: "Barrier-focused skincare",
+        image: "/images/medipic/sample/products/skin-restore.png",
+      },
+      {
+        name: "Tranexamic",
+        caption: "Spot and dullness care",
+        image: "/images/medipic/sample/products/skin-tranexamic.png",
+      },
     ],
-    productFocus: "object-[50%_50%]",
-    position: "object-[50%_52%]",
-    tone: "bg-[#f1e5e5]",
-    accent: "#f0c8ce",
   },
 ];
 
 export function getCareProduct(id: string) {
-  return careProducts.find((product) => product.id === id);
+  return careProducts.find((product) => product.id === id || product.legacyIds?.includes(id));
 }

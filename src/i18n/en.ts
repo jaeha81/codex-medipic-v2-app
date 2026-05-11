@@ -48,6 +48,8 @@ export const en = {
     contraindication_block_title: 'Treatment Not Available',
     contraindication_block_back: 'Go Back',
     contraindication_block_contact: 'Contact Support',
+    selectedOption: 'Selected option',
+    selectedOptionHint: 'Complete the intake so the clinic can review whether this option is appropriate.',
   },
   booking: {
     title: 'Booking Confirmed!',

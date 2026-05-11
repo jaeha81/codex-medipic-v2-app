@@ -50,6 +50,8 @@ export const ja: Translations = {
     contraindication_block_title: 'この治療は対応できません',
     contraindication_block_back: '戻る',
     contraindication_block_contact: 'サポートに問い合わせる',
+    selectedOption: '選択中の商品',
+    selectedOptionHint: 'この商品が適しているか確認できるよう、問診に回答してください。',
   },
   booking: {
     title: '予約完了！',
