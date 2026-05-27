@@ -31,8 +31,8 @@ export const careProducts: CareProduct[] = [
     number: "01",
     title: "Weight Loss",
     navLabel: "Weight",
-    kicker: "A lighter way forward.",
-    tagline: "Doctor-guided weight care designed to help women take the next step with confidence.",
+    kicker: "Trouble controlling your appetite?",
+    tagline: "Start with weight care that fits your body.",
     shortBody: "A simple online path for weight care, from intake to follow-up.",
     detailBody:
       "Doctor-guided weight care designed to help women take the next step with confidence. Start with a focused intake, continue through online support, and keep the next action clear.",
@@ -60,7 +60,7 @@ export const careProducts: CareProduct[] = [
     number: "02",
     title: "Hair",
     navLabel: "Hair",
-    kicker: "Thicker. Stronger. Yours.",
+    kicker: "If hair shedding has increased,",
     tagline:
       "Personalized hair support for women, combining doctor-guided care with a clear plan for fuller, stronger-looking hair.",
     shortBody: "A calm, guided path for hair and scalp concerns.",
@@ -91,9 +91,8 @@ export const careProducts: CareProduct[] = [
     number: "03",
     title: "Menopause",
     navLabel: "Menopause",
-    kicker: "Care through every change.",
-    tagline:
-      "Pill, PMS, menopause, and HRT support designed for long-term women's health guidance.",
+    kicker: "If your body feels different,",
+    tagline: "understanding it comes first.",
     shortBody: "A discreet online flow for hormonal changes, PMS, and menopause concerns.",
     detailBody:
       "Pill, PMS, menopause, and HRT support designed for long-term women's health guidance. The page keeps the tone soft, readable, and centered on trust.",
@@ -117,9 +116,8 @@ export const careProducts: CareProduct[] = [
     number: "04",
     title: "Medical Skincare",
     navLabel: "Skincare",
-    kicker: "Clearer skin, clinically guided.",
-    tagline:
-      "Medical skincare support for spots, dullness, acne, and skin concerns, guided by doctors and tailored to your skin.",
+    kicker: "Skin feeling more sensitive?",
+    tagline: "Your skin may need a more personalized approach.",
     shortBody: "Clinical skincare guidance without a noisy beauty-commerce feel.",
     detailBody:
       "Medical skincare support for spots, dullness, acne, and skin concerns, guided by doctors and tailored to your skin. The page emphasizes clean photography, short copy, and a direct start action.",

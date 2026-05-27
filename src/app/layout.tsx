@@ -34,8 +34,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="h-full">
-      <body className="min-h-full flex flex-col bg-white">
-        {children}
+      <body className="min-h-full bg-[#e7ece8]">
+        <div className="mobile-app-shell mx-auto min-h-[100dvh] w-full max-w-[430px] bg-[#fbfdf9]">
+          {children}
+        </div>
         <PwaRegister />
       </body>
     </html>

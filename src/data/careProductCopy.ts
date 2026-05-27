@@ -17,8 +17,8 @@ export const productCopy: Record<Locale, Record<CareProductId, LocalizedProductC
     weight: {
       title: "Weight Loss",
       navLabel: "Weight",
-      kicker: "A lighter way forward.",
-      tagline: "Doctor-guided GLP-1 weight care for a clear, private next step.",
+      kicker: "Trouble controlling your appetite?",
+      tagline: "Start with weight care that fits your body.",
       shortBody: "A simple online path for medical weight care, from intake to follow-up.",
       detailBody:
         "Start with a focused intake, review GLP-1 options clearly, and continue with doctor-guided follow-up. The flow checks medical history before treatment is considered.",
@@ -31,8 +31,8 @@ export const productCopy: Record<Locale, Record<CareProductId, LocalizedProductC
     hair: {
       title: "Hair",
       navLabel: "Hair",
-      kicker: "Thicker. Stronger. Yours.",
-      tagline: "Female hair loss and eyelash support with a clear doctor-guided plan.",
+      kicker: "If hair shedding has increased,",
+      tagline: "care should start with the cause.",
       shortBody: "A calm, guided path for hair, scalp, and eyelash concerns.",
       detailBody:
         "Tell us about shedding, scalp condition, treatment history, and eye-related concerns when relevant. A clinician can review whether minoxidil, eyelash care, or another option is appropriate.",
@@ -45,8 +45,8 @@ export const productCopy: Record<Locale, Record<CareProductId, LocalizedProductC
     menopause: {
       title: "Menopause",
       navLabel: "Menopause",
-      kicker: "Care through every change.",
-      tagline: "Pill, PMS, menopause, and HRT support designed for long-term women's health guidance.",
+      kicker: "If your body feels different,",
+      tagline: "understanding it comes first.",
       shortBody: "A discreet online flow for hormonal changes, PMS, and menopause concerns.",
       detailBody:
         "Share symptoms, cycle changes, medical history, smoking status, blood pressure concerns, and current medication use. The care flow helps clarify whether pill, PMS, menopause, HRT, or lifestyle support should be reviewed.",
@@ -58,8 +58,8 @@ export const productCopy: Record<Locale, Record<CareProductId, LocalizedProductC
     skincare: {
       title: "Medical Skincare",
       navLabel: "Skincare",
-      kicker: "Clearer skin, clinically guided.",
-      tagline: "Medical skincare support for acne, spots, dullness, and brightening concerns.",
+      kicker: "Skin feeling more sensitive?",
+      tagline: "Your skin may need a more personalized approach.",
       shortBody: "Clinical skincare guidance without a noisy beauty-commerce feel.",
       detailBody:
         "Upload a clear skin photo, describe your routine, and share treatment history. Tretinoin, hydroquinone, tranexamic acid, and vitamin support can be reviewed after intake and LINE registration.",

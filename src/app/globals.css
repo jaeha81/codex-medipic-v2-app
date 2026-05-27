@@ -22,6 +22,11 @@
   --color-dark: #111111;
   --font-sans: 'Work Sans', 'Noto Sans JP', 'Noto Sans KR', 'Avenir Next', Arial, sans-serif;
   --font-mono: 'Space Mono', 'SFMono-Regular', Consolas, monospace;
+  --breakpoint-sm: 9999px;
+  --breakpoint-md: 10000px;
+  --breakpoint-lg: 10001px;
+  --breakpoint-xl: 10002px;
+  --breakpoint-2xl: 10003px;
 }
 
 :root {
@@ -45,6 +50,25 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.mobile-app-shell {
+  isolation: isolate;
+  overflow-x: hidden;
+  position: relative;
+  transform: translateZ(0);
+}
+
+@media (min-width: 431px) {
+  body {
+    background: #e7ece8;
+  }
+
+  .mobile-app-shell {
+    box-shadow:
+      0 0 0 1px rgba(17, 17, 17, 0.06),
+      0 24px 80px rgba(17, 17, 17, 0.12);
+  }
 }
 
 .versed-label {

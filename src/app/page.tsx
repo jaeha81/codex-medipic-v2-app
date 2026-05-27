@@ -16,7 +16,6 @@ type HomeCopy = {
   signUp: string;
   email: string;
   categories: string;
-  joinHelp: string;
   line: string;
   lineBlockEyebrow: string;
   lineBlockTitle: string;
@@ -48,20 +47,19 @@ const uiCopy: Record<Locale, HomeCopy> = {
     signUp: "Sign up",
     email: "Email",
     categories: "Care menu",
-    joinHelp: "Join & Help",
     line: "Connect on LINE",
     lineBlockEyebrow: "Start on LINE",
     lineBlockTitle: "A simple guided intake for your concern.",
     lineBlockButton: "LINE",
     heroEyebrow: "medipic app",
-    heroTitle: "Your care journey, all in one place",
-    heroSubtitle: "Start with a private intake, review treatment options clearly, and continue care online with doctor guidance.",
+    heroTitle: "Start on LINE, stay supported beyond the consultation",
+    heroSubtitle: "Easy, fast online consultations with women's health doctors\nIntake, booking, care, and follow-up in one flow\nNo app download needed, receive care from home",
     treatmentOptions: "Treatment options",
     productHint: (title) => `Tap a product image to open the ${title} detail page.`,
     getStarted: "Get started",
     intake: "Intake",
-    membershipTitle: "Get complete care in one membership",
-    membershipSubtitle: "Designed for women, from consultation and product review to follow-up guidance.",
+    membershipTitle: "your care journey, all in one place",
+    membershipSubtitle: "Care designed for women, guided by women’s health doctors\nConnect with women’s health doctors through convenient online consultations\nFrom intake to booking, consultation, prescription, and delivery — everything flows simply\nStart without downloading an app, and receive your care from home",
     membershipBenefits: [
       "Personalized care plan",
       "Women's health doctors online",
@@ -85,7 +83,6 @@ const uiCopy: Record<Locale, HomeCopy> = {
     signUp: "登録",
     email: "Email",
     categories: "ケアメニュー",
-    joinHelp: "登録・ヘルプ",
     line: "LINEで相談",
     lineBlockEyebrow: "Start on LINE",
     lineBlockTitle: "気になることを、かんたんな問診から始められます。",
@@ -122,7 +119,6 @@ const uiCopy: Record<Locale, HomeCopy> = {
     signUp: "가입",
     email: "Email",
     categories: "케어 메뉴",
-    joinHelp: "가입 및 도움말",
     line: "LINE 상담",
     lineBlockEyebrow: "Start on LINE",
     lineBlockTitle: "고민에 맞춘 간단한 안내 문진으로 시작하세요.",
@@ -156,8 +152,10 @@ const uiCopy: Record<Locale, HomeCopy> = {
 };
 
 const socialLinks = [
+  { name: "LINE", href: getLineConnectUrl() },
   { name: "Instagram", href: "https://www.instagram.com/" },
   { name: "Facebook", href: "https://www.facebook.com/" },
+  { name: "X", href: "https://x.com/" },
 ] as const;
 
 const complianceCopy: Record<Locale, { title: string; items: string[] }> = {
@@ -224,12 +222,28 @@ function PlusIcon() {
   );
 }
 
+function LineIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5 shrink-0" viewBox="0 0 48 48" fill="currentColor">
+      <path d="M24 4C12.95 4 4 12.07 4 22.05c0 5.94 3.08 11.22 7.88 14.63l-1.8 6.6a.5.5 0 0 0 .7.59l7.52-3.9A21.3 21.3 0 0 0 24 40.1c11.05 0 20-8.07 20-18.05S35.05 4 24 4Zm-6.5 23.5h-2.75a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 1.5 0v8h2a.75.75 0 0 1 0 1.5Zm4.25 0a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.5 0v9.5Zm8.25 0a.75.75 0 0 1-.57-.27l-4-5.23v4.75a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.32-.49l4 5.23V18a.75.75 0 0 1 1.5 0v8.75a.75.75 0 0 1-.75.75Zm5.25 0H32.5a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 .75-.75h2.75a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5Z" />
+    </svg>
+  );
+}
+
 function InstagramIcon() {
   return (
     <svg aria-hidden="true" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.9">
       <rect width="17" height="17" x="3.5" y="3.5" rx="4.5" />
       <circle cx="12" cy="12" r="3.7" />
       <path strokeLinecap="round" d="M17.5 6.7h.01" />
+    </svg>
+  );
+}
+
+function LineSocialIcon() {
+  return (
+    <svg aria-hidden="true" className="h-8 w-8" viewBox="0 0 48 48" fill="currentColor">
+      <path d="M24 4C12.95 4 4 12.07 4 22.05c0 5.94 3.08 11.22 7.88 14.63l-1.8 6.6a.5.5 0 0 0 .7.59l7.52-3.9A21.3 21.3 0 0 0 24 40.1c11.05 0 20-8.07 20-18.05S35.05 4 24 4Zm-6.5 23.5h-2.75a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 1.5 0v8h2a.75.75 0 0 1 0 1.5Zm4.25 0a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.5 0v9.5Zm8.25 0a.75.75 0 0 1-.57-.27l-4-5.23v4.75a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.32-.49l4 5.23V18a.75.75 0 0 1 1.5 0v8.75a.75.75 0 0 1-.75.75Zm5.25 0H32.5a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 .75-.75h2.75a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5Z" />
     </svg>
   );
 }
@@ -242,17 +256,24 @@ function FacebookIcon() {
   );
 }
 
+function XIcon() {
+  return (
+    <svg aria-hidden="true" className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M14.7 10.55 21.4 3h-1.6l-5.82 6.56L9.33 3H4l7.03 9.93L4 20.86h1.6l6.14-6.93 4.9 6.93H22l-7.3-10.31Zm-2.17 2.45-.71-.99-5.67-7.78h2.42l4.57 6.27.71.99 5.95 8.17h-2.42L12.53 13Z" />
+    </svg>
+  );
+}
+
 function SocialIcon({ name }: { name: (typeof socialLinks)[number]["name"] }) {
+  if (name === "LINE") return <LineSocialIcon />;
   if (name === "Instagram") return <InstagramIcon />;
-  return <FacebookIcon />;
+  if (name === "Facebook") return <FacebookIcon />;
+  return <XIcon />;
 }
 
 function TopNav({ locale, setLocale, copy, products }: { locale: Locale; setLocale: (locale: Locale) => void; copy: HomeCopy; products: CareProduct[] }) {
   const [isOpen, setIsOpen] = useState(false);
-  const menuItems = [
-    ...products.map((product) => ({ number: product.number, label: product.title, href: `#${product.id}` })),
-    { number: "05", label: copy.joinHelp, href: "#footer" },
-  ];
+  const menuItems = products.map((product) => ({ number: product.number, label: product.navLabel, href: `#${product.id}` }));
 
   return (
     <>
@@ -271,17 +292,17 @@ function TopNav({ locale, setLocale, copy, products }: { locale: Locale; setLoca
             event.preventDefault();
             setIsOpen(true);
           }}
-          className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/88 text-[#111111] shadow-[0_12px_36px_rgba(17,17,17,0.12)] backdrop-blur transition hover:bg-[#dff0e5]"
+          className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center border-0 bg-transparent text-[#111111] shadow-none transition hover:text-black/55"
           aria-label="Open care menu"
         >
           <MenuIcon />
         </a>
         <div className="pointer-events-auto flex items-center gap-2">
-          <Link href="/login" className="hidden rounded-full border border-black/10 bg-white/88 px-4 py-2 text-xs font-semibold text-black/70 shadow-[0_10px_28px_rgba(17,17,17,0.08)] backdrop-blur transition hover:bg-[#dff0e5] sm:inline-flex">
+          <Link href="/login" className="inline-flex border-0 bg-transparent py-2 text-xs font-semibold text-black/70 shadow-none transition hover:text-[#111111]">
             {copy.login}
           </Link>
-          <div className="hidden sm:block">
-            <LanguageSwitcher locale={locale} onChange={setLocale} variant="light" />
+          <div>
+            <LanguageSwitcher locale={locale} onChange={setLocale} variant="text" />
           </div>
         </div>
         </div>
@@ -304,7 +325,7 @@ function TopNav({ locale, setLocale, copy, products }: { locale: Locale; setLoca
                     <span className="block text-xl font-medium text-[#111111]">{item.label}</span>
                   </span>
                   <span className="grid h-9 w-9 place-items-center rounded-full border border-black/14 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
-                    <ArrowIcon />
+                    <PlusIcon />
                   </span>
                 </a>
               ))}
@@ -316,31 +337,27 @@ function TopNav({ locale, setLocale, copy, products }: { locale: Locale; setLoca
   );
 }
 
-function CategoryMenu({ products, copy }: { products: CareProduct[]; copy: HomeCopy }) {
+function CategoryMenu({ products }: { products: CareProduct[] }) {
   return (
     <nav id="care-menu" className="w-full max-w-lg scroll-mt-24" aria-label="Care categories">
-      <p className="versed-label mb-2 text-center text-black/44">{copy.categories}</p>
-      <div className="overflow-hidden rounded-[3px] border border-black/12 bg-white/88 backdrop-blur">
+      <div>
         {products.map((product) => (
-          <Link key={product.id} href={`#${product.id}`} className="group flex items-center justify-between border-b border-black/10 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#dff0e5]">
+          <Link key={product.id} href={`#${product.id}`} className="group flex items-center justify-between px-4 py-3 text-left transition hover:text-black/58">
             <span>
               <span className="versed-label block text-black/38">{product.number}</span>
-              <span className="block text-lg font-medium text-[#111111]">{product.title}</span>
+              <span className="block text-lg font-medium text-[#111111]">{product.navLabel}</span>
             </span>
-            <span className="grid h-8 w-8 place-items-center rounded-full border border-black/14 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
-              <ArrowIcon />
+            <span className="grid h-8 w-8 place-items-center text-[#111111] transition group-hover:text-black/58">
+              <PlusIcon />
             </span>
           </Link>
         ))}
-        <Link href="#footer" className="group flex items-center justify-between border-b border-black/10 px-4 py-3 text-left transition last:border-b-0 hover:bg-[#dff0e5]">
-          <span>
-            <span className="versed-label block text-black/38">05</span>
-            <span className="block text-lg font-medium text-[#111111]">{copy.joinHelp}</span>
-          </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full border border-black/14 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
-            <ArrowIcon />
-          </span>
-        </Link>
+      </div>
+      <div className="mt-5 flex justify-center">
+        <a href={getLineConnectUrl()} aria-label="Connect on LINE" className="inline-flex items-center justify-center gap-2 bg-[#07B53B] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(7,181,59,0.24)] transition hover:bg-[#069b34]">
+          <LineIcon />
+          <span>LINE</span>
+        </a>
       </div>
     </nav>
   );
@@ -368,14 +385,13 @@ function HeroSection({ products, copy }: { products: CareProduct[]; copy: HomeCo
   return (
     <section className="relative min-h-[100dvh] overflow-hidden bg-[#dff0e5]">
       <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-[1440px] flex-col items-center justify-center px-5 pb-12 pt-28 text-center sm:px-8">
-        <p className="versed-label text-black/48">{copy.heroEyebrow}</p>
-        <h1 className="mt-6 max-w-3xl text-4xl font-medium leading-[0.98] tracking-[-0.03em] text-[#111111] text-balance sm:text-5xl lg:text-[3.35rem]">
+        <h1 className="max-w-3xl text-[20px] font-medium leading-[1.14] tracking-normal text-[#111111] text-balance">
           {copy.heroTitle}
         </h1>
-        <p className="mt-5 max-w-[34ch] text-sm leading-7 text-black/64 sm:max-w-xl sm:text-[15px]">{copy.heroSubtitle}</p>
+        <p className="mt-5 max-w-[34ch] whitespace-pre-line text-center text-sm leading-7 text-black/64 sm:max-w-xl sm:text-[15px]">{copy.heroSubtitle}</p>
         <div className="mt-7">
-          <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
-            {copy.join}
+          <Link href="/signup" className="inline-flex items-center gap-3 rounded-none bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
+            Learn more
             <ArrowIcon />
           </Link>
         </div>
@@ -383,27 +399,26 @@ function HeroSection({ products, copy }: { products: CareProduct[]; copy: HomeCo
           <HeroVisual />
         </div>
         <div className="mt-8 flex w-full justify-center md:mt-10">
-          <CategoryMenu products={products} copy={copy} />
+          <CategoryMenu products={products} />
         </div>
       </div>
     </section>
   );
 }
 
-function ProductSlideCard({ product, item, index }: { product: CareProduct; item: ProductGalleryItem; index: number }) {
+function ProductSlideCard({ product, item, index, copy }: { product: CareProduct; item: ProductGalleryItem; index: number; copy: HomeCopy }) {
   return (
-    <Link href={`/products/${product.id}`} style={{ animationDelay: `${index * 160}ms` }} className="animate-productCardDrift group relative shrink-0 basis-[74%] snap-start overflow-hidden rounded-[4px] border border-black/10 bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_48px_rgba(17,17,17,0.14)] sm:basis-[44%] lg:basis-[30%]" aria-label={`${item.name} detail`}>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[3px] bg-[#f6fbf7]">
-        <Image src={item.image} alt={`${item.name} product image`} fill sizes="(max-width: 768px) 72vw, 28vw" className="object-contain object-center p-2 transition duration-500 group-hover:scale-[1.03]" />
-      </div>
-      <div className="flex items-end justify-between gap-4 px-1 pb-1 pt-4">
-        <span>
-          <span className="block text-base font-semibold tracking-[-0.02em] text-[#111111]">{item.name}</span>
-          <span className="mt-1 block text-xs leading-5 text-black/58">{item.caption}</span>
-        </span>
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-black/12 text-[#111111] transition group-hover:bg-[#111111] group-hover:text-white">
-          <ArrowIcon />
-        </span>
+    <Link href={`/products/${product.id}`} style={{ animationDelay: `${index * 160}ms` }} className="animate-productCardDrift group relative shrink-0 basis-[48%] snap-start overflow-hidden transition duration-300 hover:-translate-y-1 lg:basis-[30%]" aria-label={`${item.name} detail`}>
+      <div className="relative aspect-[10/9] overflow-hidden bg-transparent">
+        <Image src={item.image} alt={`${item.name} product image`} fill sizes="(max-width: 768px) 72vw, 28vw" className="object-contain object-center p-1 transition duration-500 group-hover:scale-[1.03]" />
+        <div className="absolute inset-x-0 bottom-4 flex flex-col items-center px-4">
+          <span className="inline-flex items-center justify-center bg-[#111111] px-3 py-1.5 text-[10px] font-semibold text-white transition group-hover:bg-[#2f2f2f]">
+            {copy.getStarted}
+          </span>
+          <span className="mt-1 text-[8px] font-semibold leading-none text-[#111111]">
+            {"starting at 100\u00A5"}
+          </span>
+        </div>
       </div>
     </Link>
   );
@@ -414,31 +429,12 @@ function ProductSlider({ product, copy }: { product: CareProduct; copy: HomeCopy
     <div className="mx-auto mt-20 w-full max-w-4xl lg:mt-28">
       <div className="mb-5 text-center">
         <p className="versed-label text-black/44">{copy.treatmentOptions}</p>
-        <p className="mt-2 text-sm leading-6 text-black/58">{copy.productHint(product.title)}</p>
+        <p className="mt-2 text-sm leading-6 text-black/58">{copy.productHint(product.navLabel)}</p>
       </div>
-      <div className="product-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-6 sm:-mx-8 sm:px-8" aria-label={copy.treatmentOptions} tabIndex={0}>
+      <div className="product-scrollbar -mx-5 flex snap-x snap-mandatory gap-1 overflow-x-auto overscroll-x-contain px-5 pb-6 sm:-mx-8 sm:px-8" aria-label={copy.treatmentOptions} tabIndex={0}>
         {product.gallery.map((item, index) => (
-          <ProductSlideCard key={item.name} product={product} item={item} index={index} />
+          <ProductSlideCard key={item.name} product={product} item={item} index={index} copy={copy} />
         ))}
-      </div>
-    </div>
-  );
-}
-
-function LineStartBlock({ copy }: { copy: HomeCopy }) {
-  return (
-    <div className="mt-12 flex w-full max-w-4xl justify-center px-5 pb-4 pt-8 text-center sm:px-8 lg:mt-16">
-      <div className="max-w-xl">
-        <p className="versed-label text-black/42">{copy.lineBlockEyebrow}</p>
-        <p className="mx-auto mt-5 max-w-[28ch] text-3xl font-medium leading-[1.08] tracking-[-0.03em] text-[#111111] text-balance sm:text-4xl">
-          {copy.lineBlockTitle}
-        </p>
-        <div className="mt-7 flex flex-col items-center gap-3">
-          <a href={getLineConnectUrl()} className="inline-flex min-w-32 items-center justify-center rounded-full bg-[#07B53B] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(7,181,59,0.24)] hover:bg-[#069b34]">
-            {copy.lineBlockButton}
-          </a>
-          <span className="text-xs font-medium leading-5 text-black/44">{copy.line}</span>
-        </div>
       </div>
     </div>
   );
@@ -450,22 +446,18 @@ function CareSection({ product, copy }: { product: CareProduct; copy: HomeCopy }
       <Image src={product.image} alt={`${product.title} care visual`} fill sizes="100vw" className={`object-cover ${product.imagePosition}`} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,253,249,0.78),rgba(251,253,249,0.18)_34%,rgba(251,253,249,0.82)_72%,rgba(251,253,249,0.96))]" />
       <div className="relative z-10 mx-auto flex min-h-[128dvh] max-w-[1440px] flex-col items-center px-5 pb-16 pt-[16dvh] text-center sm:px-8 lg:min-h-[132dvh] lg:pb-20 lg:pt-[18dvh]">
-        <p className="versed-label text-black/46">{product.title}</p>
-        <h2 className="mt-5 max-w-2xl text-3xl font-medium leading-[1.03] tracking-[-0.03em] text-[#111111] text-balance sm:text-4xl lg:text-[2.9rem]">
+        {product.id !== "weight" && product.id !== "hair" && product.id !== "menopause" && product.id !== "skincare" && <p className="versed-label text-black/46">{product.title}</p>}
+        <h2 className={`${product.id === "weight" ? "mt-0" : "mt-5"} max-w-2xl text-[20px] font-medium leading-[1.14] tracking-normal text-[#111111] text-balance`}>
           {product.kicker}
         </h2>
         <p className="mt-6 max-w-xl text-sm leading-7 text-black/66 sm:text-[15px]">{product.tagline}</p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link href={`/products/${product.id}`} className="inline-flex items-center gap-3 rounded-full bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
+        <div className="mt-8 flex justify-center">
+          <Link href={`/products/${product.id}`} className="inline-flex items-center gap-3 rounded-none bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
             {copy.getStarted}
             <ArrowIcon />
           </Link>
-          <Link href={product.href} className="inline-flex items-center gap-3 rounded-full border border-black/15 bg-white/80 px-6 py-3.5 text-sm font-semibold text-black/72 backdrop-blur transition hover:bg-[#dff0e5]">
-            {copy.intake}
-          </Link>
         </div>
         <ProductSlider product={product} copy={copy} />
-        <LineStartBlock copy={copy} />
       </div>
     </section>
   );
@@ -487,7 +479,7 @@ function MembershipPanel({ copy }: { copy: HomeCopy }) {
       </div>
       <div className="mt-7 text-center">
         <h3 className="text-2xl font-medium leading-[1.05] tracking-[-0.02em] text-[#111111] text-balance sm:text-3xl">{copy.membershipTitle}</h3>
-        <p className="mt-3 text-sm leading-6 text-black/58">{copy.membershipSubtitle}</p>
+        <p className="mt-3 whitespace-pre-line text-sm leading-6 text-black/58">{copy.membershipSubtitle}</p>
       </div>
       <div className="mt-6 divide-y divide-black/10">
         {copy.membershipBenefits.map((benefit) => (
@@ -535,7 +527,7 @@ function FooterBlock({ copy, products, locale }: { copy: HomeCopy; products: Car
     },
     {
       title: copy.footerCore,
-      links: products.map((product) => ({ label: product.title, href: `#${product.id}` })),
+      links: products.map((product) => ({ label: product.navLabel, href: `#${product.id}` })),
     },
     {
       title: copy.footerHelp,
@@ -548,29 +540,16 @@ function FooterBlock({ copy, products, locale }: { copy: HomeCopy; products: Car
   ];
 
   return (
-    <footer id="footer" className="mt-16 max-w-xl scroll-mt-8 text-left">
+    <footer id="footer" className="mt-10 max-w-xl scroll-mt-8 border-t border-[#111111] pt-10 text-left">
       <Link href="/" className="text-3xl font-semibold tracking-[-0.05em] text-[#111111]" aria-label="Medipic home">
         medipic
       </Link>
-      <form action="/signup" className="mt-9 flex items-end gap-4 border-b border-[#111111] pb-3">
-        <label className="sr-only" htmlFor="footer-email">
-          {copy.email}
-        </label>
-        <input
-          id="footer-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder={copy.email}
-          className="min-w-0 flex-1 bg-transparent text-lg text-[#111111] outline-none placeholder:text-black/38"
-        />
-        <button type="submit" className="versed-label shrink-0 text-[#111111] hover:opacity-60">
-          {copy.signUp}
-        </button>
-      </form>
+      <p className="mt-9 border-b border-[#111111] pb-3 text-sm font-medium leading-6 text-black/68">
+        Care. Made for woman by woman’s doctor
+      </p>
       <div className="mt-5 flex items-center gap-4">
         {socialLinks.map((social) => (
-          <a key={social.name} href={social.href} aria-label={social.name} className="text-[#111111] hover:opacity-62">
+          <a key={social.name} href={social.href} target="_blank" rel="noreferrer" aria-label={social.name} className={`${social.name === "LINE" ? "text-[#06C755]" : "text-[#111111]"} hover:opacity-62`}>
             <SocialIcon name={social.name} />
           </a>
         ))}
@@ -598,16 +577,10 @@ function JoinSection({ copy, products, locale }: { copy: HomeCopy; products: Car
       <div className="mx-auto grid min-h-[100dvh] max-w-[1440px] items-center gap-8 px-5 py-24 sm:px-8 lg:grid-cols-[0.5fr_0.5fr]">
         <MembershipPanel copy={copy} />
         <div className="text-center lg:text-left">
-          <p className="versed-label text-black/42">{copy.joinEyebrow}</p>
-          <h2 className="mt-6 max-w-xl text-3xl font-medium leading-[1.04] tracking-[-0.03em] text-[#111111] text-balance sm:text-4xl">{copy.heroTitle}</h2>
-          <p className="mt-7 max-w-xl text-base leading-7 text-black/62">{copy.heroSubtitle}</p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
-            <Link href="/signup" className="inline-flex items-center gap-3 rounded-full bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
+          <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
+            <Link href="/signup" className="inline-flex items-center gap-3 rounded-none bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
               {copy.join}
               <ArrowIcon />
-            </Link>
-            <Link href="/intake/weight/complete" className="inline-flex items-center gap-3 rounded-full border border-black/15 bg-white px-6 py-3.5 text-sm font-semibold text-black/72 transition hover:bg-[#dff0e5]">
-              {copy.line}
             </Link>
           </div>
           <FooterBlock copy={copy} products={products} locale={locale} />
