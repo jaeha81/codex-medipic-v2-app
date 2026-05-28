@@ -19,6 +19,7 @@ type HomeCopy = {
   line: string;
   lineBlockEyebrow: string;
   lineBlockTitle: string;
+  lineBlockSubtitle: string;
   lineBlockButton: string;
   heroEyebrow: string;
   heroTitle: string;
@@ -49,11 +50,12 @@ const uiCopy: Record<Locale, HomeCopy> = {
     categories: "Care menu",
     line: "Connect on LINE",
     lineBlockEyebrow: "Start on LINE",
-    lineBlockTitle: "A simple guided intake for your concern.",
+    lineBlockTitle: "Start on LINE, stay supported beyond the consultation",
+    lineBlockSubtitle: "Easy, fast online consultations with women's health doctors\nIntake, booking, care, and follow-up in one flow\nNo app download needed, receive care from home",
     lineBlockButton: "LINE",
     heroEyebrow: "medipic app",
-    heroTitle: "Start on LINE, stay supported beyond the consultation",
-    heroSubtitle: "Easy, fast online consultations with women's health doctors\nIntake, booking, care, and follow-up in one flow\nNo app download needed, receive care from home",
+    heroTitle: "Care designed for women, guided by women’s health doctors",
+    heroSubtitle: "Connect with women’s health doctors through convenient online consultations\nFrom intake to booking, consultation, prescription, and delivery — everything flows simply\nStart without downloading an app, and receive your care from home",
     treatmentOptions: "Treatment options",
     productHint: (title) => `Tap a product image to open the ${title} detail page.`,
     getStarted: "Get started",
@@ -86,6 +88,7 @@ const uiCopy: Record<Locale, HomeCopy> = {
     line: "LINEで相談",
     lineBlockEyebrow: "Start on LINE",
     lineBlockTitle: "気になることを、かんたんな問診から始められます。",
+    lineBlockSubtitle: "プライベートな問診から始め、治療オプションを確認し、医師の案内に沿ってオンラインでケアを続けられます。",
     lineBlockButton: "LINE",
     heroEyebrow: "medipic app",
     heroTitle: "相談からフォローまで、ひとつの場所で",
@@ -122,6 +125,7 @@ const uiCopy: Record<Locale, HomeCopy> = {
     line: "LINE 상담",
     lineBlockEyebrow: "Start on LINE",
     lineBlockTitle: "고민에 맞춘 간단한 안내 문진으로 시작하세요.",
+    lineBlockSubtitle: "비공개 문진으로 시작하고, 상품 정보를 확인한 뒤 의료진 검토를 거쳐 온라인 케어를 이어갑니다.",
     lineBlockButton: "LINE",
     heroEyebrow: "medipic app",
     heroTitle: "상담부터 사후관리까지 한 곳에서",
@@ -222,14 +226,6 @@ function PlusIcon() {
   );
 }
 
-function LineIcon() {
-  return (
-    <svg aria-hidden="true" className="h-5 w-5 shrink-0" viewBox="0 0 48 48" fill="currentColor">
-      <path d="M24 4C12.95 4 4 12.07 4 22.05c0 5.94 3.08 11.22 7.88 14.63l-1.8 6.6a.5.5 0 0 0 .7.59l7.52-3.9A21.3 21.3 0 0 0 24 40.1c11.05 0 20-8.07 20-18.05S35.05 4 24 4Zm-6.5 23.5h-2.75a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 1.5 0v8h2a.75.75 0 0 1 0 1.5Zm4.25 0a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.5 0v9.5Zm8.25 0a.75.75 0 0 1-.57-.27l-4-5.23v4.75a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.32-.49l4 5.23V18a.75.75 0 0 1 1.5 0v8.75a.75.75 0 0 1-.75.75Zm5.25 0H32.5a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 .75-.75h2.75a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5Z" />
-    </svg>
-  );
-}
-
 function InstagramIcon() {
   return (
     <svg aria-hidden="true" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.9">
@@ -242,8 +238,11 @@ function InstagramIcon() {
 
 function LineSocialIcon() {
   return (
-    <svg aria-hidden="true" className="h-8 w-8" viewBox="0 0 48 48" fill="currentColor">
-      <path d="M24 4C12.95 4 4 12.07 4 22.05c0 5.94 3.08 11.22 7.88 14.63l-1.8 6.6a.5.5 0 0 0 .7.59l7.52-3.9A21.3 21.3 0 0 0 24 40.1c11.05 0 20-8.07 20-18.05S35.05 4 24 4Zm-6.5 23.5h-2.75a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 1.5 0v8h2a.75.75 0 0 1 0 1.5Zm4.25 0a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.5 0v9.5Zm8.25 0a.75.75 0 0 1-.57-.27l-4-5.23v4.75a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 1.32-.49l4 5.23V18a.75.75 0 0 1 1.5 0v8.75a.75.75 0 0 1-.75.75Zm5.25 0H32.5a.75.75 0 0 1-.75-.75V18a.75.75 0 0 1 .75-.75h2.75a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5h-2v2.5h2a.75.75 0 0 1 0 1.5Z" />
+    <svg aria-hidden="true" className="h-8 w-8" viewBox="0 0 32 32" fill="none">
+      <rect x="4.5" y="4.5" width="23" height="23" rx="1.5" stroke="currentColor" strokeWidth="2" />
+      <text x="16" y="18.9" fill="currentColor" fontFamily="Arial, Helvetica, sans-serif" fontSize="7" fontWeight="700" textAnchor="middle">
+        LINE
+      </text>
     </svg>
   );
 }
@@ -337,14 +336,13 @@ function TopNav({ locale, setLocale, copy, products }: { locale: Locale; setLoca
   );
 }
 
-function CategoryMenu({ products }: { products: CareProduct[] }) {
+function CategoryMenu({ products, copy }: { products: CareProduct[]; copy: HomeCopy }) {
   return (
     <nav id="care-menu" className="w-full max-w-lg scroll-mt-24" aria-label="Care categories">
-      <div>
+      <div className="grid gap-2.5">
         {products.map((product) => (
-          <Link key={product.id} href={`#${product.id}`} className="group flex items-center justify-between px-4 py-3 text-left transition hover:text-black/58">
+          <Link key={product.id} href={`#${product.id}`} className="group flex items-center justify-between border border-black/16 px-5 py-4 text-left transition hover:border-black/28 hover:bg-white/25 hover:text-black/58">
             <span>
-              <span className="versed-label block text-black/38">{product.number}</span>
               <span className="block text-lg font-medium text-[#111111]">{product.navLabel}</span>
             </span>
             <span className="grid h-8 w-8 place-items-center text-[#111111] transition group-hover:text-black/58">
@@ -353,10 +351,15 @@ function CategoryMenu({ products }: { products: CareProduct[] }) {
           </Link>
         ))}
       </div>
+      <div className="mt-7 text-center">
+        <h2 className="mx-auto max-w-[32ch] text-[20px] font-medium leading-[1.14] tracking-normal text-[#111111] text-balance">
+          {copy.lineBlockTitle}
+        </h2>
+        <p className="mx-auto mt-4 max-w-[34ch] whitespace-pre-line text-sm leading-7 text-black/64 sm:max-w-xl sm:text-[15px]">{copy.lineBlockSubtitle}</p>
+      </div>
       <div className="mt-5 flex justify-center">
-        <a href={getLineConnectUrl()} aria-label="Connect on LINE" className="inline-flex items-center justify-center gap-2 bg-[#07B53B] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(7,181,59,0.24)] transition hover:bg-[#069b34]">
-          <LineIcon />
-          <span>LINE</span>
+        <a href={getLineConnectUrl()} aria-label="Connect on LINE" className="inline-flex items-center justify-center bg-[#07B53B] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(7,181,59,0.24)] transition hover:bg-[#069b34]">
+          <span>{copy.lineBlockButton}</span>
         </a>
       </div>
     </nav>
@@ -389,9 +392,9 @@ function HeroSection({ products, copy }: { products: CareProduct[]; copy: HomeCo
           {copy.heroTitle}
         </h1>
         <p className="mt-5 max-w-[34ch] whitespace-pre-line text-center text-sm leading-7 text-black/64 sm:max-w-xl sm:text-[15px]">{copy.heroSubtitle}</p>
-        <div className="mt-7">
+        <div className="mt-7 w-full max-w-3xl text-left">
           <Link href="/signup" className="inline-flex items-center gap-3 rounded-none bg-[#111111] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#2f2f2f]">
-            Learn more
+            {copy.join}
             <ArrowIcon />
           </Link>
         </div>
@@ -399,7 +402,7 @@ function HeroSection({ products, copy }: { products: CareProduct[]; copy: HomeCo
           <HeroVisual />
         </div>
         <div className="mt-8 flex w-full justify-center md:mt-10">
-          <CategoryMenu products={products} />
+          <CategoryMenu products={products} copy={copy} />
         </div>
       </div>
     </section>
@@ -408,33 +411,34 @@ function HeroSection({ products, copy }: { products: CareProduct[]; copy: HomeCo
 
 function ProductSlideCard({ product, item, index, copy }: { product: CareProduct; item: ProductGalleryItem; index: number; copy: HomeCopy }) {
   return (
-    <Link href={`/products/${product.id}`} style={{ animationDelay: `${index * 160}ms` }} className="animate-productCardDrift group relative shrink-0 basis-[48%] snap-start overflow-hidden transition duration-300 hover:-translate-y-1 lg:basis-[30%]" aria-label={`${item.name} detail`}>
-      <div className="relative aspect-[10/9] overflow-hidden bg-transparent">
-        <Image src={item.image} alt={`${item.name} product image`} fill sizes="(max-width: 768px) 72vw, 28vw" className="object-contain object-center p-1 transition duration-500 group-hover:scale-[1.03]" />
-        <div className="absolute inset-x-0 bottom-4 flex flex-col items-center px-4">
+    <Link href={`/products/${product.id}`} style={{ animationDelay: `${index * 160}ms` }} className="group relative w-[172px] shrink-0 overflow-hidden transition duration-300 hover:-translate-y-1 sm:w-[188px]" aria-label={`${item.name} detail`}>
+      <div className="relative aspect-[385/372] overflow-hidden bg-transparent">
+        <Image src={item.image} alt={`${item.name} product image`} fill sizes="(max-width: 768px) 72vw, 28vw" className="object-contain object-center transition duration-500 group-hover:scale-[1.03]" />
+        <span className="absolute inset-x-0 bottom-[31%] z-10 flex justify-center px-3">
           <span className="inline-flex items-center justify-center bg-[#111111] px-3 py-1.5 text-[10px] font-semibold text-white transition group-hover:bg-[#2f2f2f]">
             {copy.getStarted}
           </span>
-          <span className="mt-1 text-[8px] font-semibold leading-none text-[#111111]">
-            {"starting at 100\u00A5"}
-          </span>
-        </div>
+        </span>
       </div>
     </Link>
   );
 }
 
 function ProductSlider({ product, copy }: { product: CareProduct; copy: HomeCopy }) {
+  const trackMode = product.gallery.length > 2 ? "product-marquee-track-wide" : "product-marquee-track-compact mx-auto";
+
   return (
-    <div className="mx-auto mt-20 w-full max-w-4xl lg:mt-28">
+    <div className="mx-auto mt-28 w-full max-w-4xl lg:mt-36">
       <div className="mb-5 text-center">
         <p className="versed-label text-black/44">{copy.treatmentOptions}</p>
         <p className="mt-2 text-sm leading-6 text-black/58">{copy.productHint(product.navLabel)}</p>
       </div>
-      <div className="product-scrollbar -mx-5 flex snap-x snap-mandatory gap-1 overflow-x-auto overscroll-x-contain px-5 pb-6 sm:-mx-8 sm:px-8" aria-label={copy.treatmentOptions} tabIndex={0}>
+      <div className="product-marquee -mx-5 overflow-hidden bg-transparent px-5 pb-6 sm:-mx-8 sm:px-8" aria-label={copy.treatmentOptions}>
+        <div className={`product-marquee-track ${trackMode} flex w-max gap-4 bg-transparent`}>
         {product.gallery.map((item, index) => (
           <ProductSlideCard key={item.name} product={product} item={item} index={index} copy={copy} />
         ))}
+        </div>
       </div>
     </div>
   );
@@ -442,10 +446,10 @@ function ProductSlider({ product, copy }: { product: CareProduct; copy: HomeCopy
 
 function CareSection({ product, copy }: { product: CareProduct; copy: HomeCopy }) {
   return (
-    <section id={product.id} className="relative mx-3 min-h-[128dvh] scroll-mt-20 overflow-hidden rounded-[4px] bg-[#fbfdf9] sm:mx-6 lg:min-h-[132dvh]">
+    <section id={product.id} className="relative mx-3 min-h-[100dvh] scroll-mt-20 overflow-hidden rounded-[4px] bg-[#fbfdf9] sm:mx-6 lg:min-h-[100dvh]">
       <Image src={product.image} alt={`${product.title} care visual`} fill sizes="100vw" className={`object-cover ${product.imagePosition}`} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,253,249,0.78),rgba(251,253,249,0.18)_34%,rgba(251,253,249,0.82)_72%,rgba(251,253,249,0.96))]" />
-      <div className="relative z-10 mx-auto flex min-h-[128dvh] max-w-[1440px] flex-col items-center px-5 pb-16 pt-[16dvh] text-center sm:px-8 lg:min-h-[132dvh] lg:pb-20 lg:pt-[18dvh]">
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-[1440px] flex-col items-center px-5 pb-10 pt-[10dvh] text-center sm:px-8 lg:min-h-[100dvh] lg:pb-12 lg:pt-[12dvh]">
         {product.id !== "weight" && product.id !== "hair" && product.id !== "menopause" && product.id !== "skincare" && <p className="versed-label text-black/46">{product.title}</p>}
         <h2 className={`${product.id === "weight" ? "mt-0" : "mt-5"} max-w-2xl text-[20px] font-medium leading-[1.14] tracking-normal text-[#111111] text-balance`}>
           {product.kicker}

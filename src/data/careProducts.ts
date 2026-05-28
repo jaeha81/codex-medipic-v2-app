@@ -44,14 +44,14 @@ export const careProducts: CareProduct[] = [
     benefits: ["Personalized care plan", "Women's health doctors online", "Easy refills for ongoing care"],
     gallery: [
       {
-        name: "Mounjaro",
-        caption: "Doctor-reviewed weight care option",
-        image: "/images/medipic/sample/products/weight-mounjaro.png",
-      },
-      {
         name: "Rybelsus",
         caption: "Oral GLP-1 care discussion",
-        image: "/images/medipic/sample/products/weight-rybelsus.png",
+        image: "/images/medipic/upgrade-products-rounded-v5/Weight1.png",
+      },
+      {
+        name: "Mounjaro Injection",
+        caption: "Doctor-reviewed weight care option",
+        image: "/images/medipic/upgrade-products-rounded-v5/Weight12.png",
       },
     ],
   },
@@ -61,8 +61,7 @@ export const careProducts: CareProduct[] = [
     title: "Hair",
     navLabel: "Hair",
     kicker: "If hair shedding has increased,",
-    tagline:
-      "Personalized hair support for women, combining doctor-guided care with a clear plan for fuller, stronger-looking hair.",
+    tagline: "care should start with the cause.",
     shortBody: "A calm, guided path for hair and scalp concerns.",
     detailBody:
       "Personalized hair support for women, combining doctor-guided care with a clear plan for fuller, stronger-looking hair. The experience keeps the image, message, and action centered.",
@@ -76,12 +75,12 @@ export const careProducts: CareProduct[] = [
       {
         name: "Rogaine",
         caption: "Hair density support",
-        image: "/images/medipic/sample/products/hair-rogaine.png",
+        image: "/images/medipic/upgrade-products-rounded-v5/Hair1.png",
       },
       {
-        name: "Lumigan",
-        caption: "Targeted growth support",
-        image: "/images/medipic/sample/products/hair-lumigan.png",
+        name: "Ogshi",
+        caption: "Targeted hair support",
+        image: "/images/medipic/upgrade-products-rounded-v5/Hair2.png",
       },
     ],
   },
@@ -106,7 +105,7 @@ export const careProducts: CareProduct[] = [
       {
         name: "Equelle",
         caption: "Menopause and hormonal balance support",
-        image: "/images/medipic/sample/products/women-equelle.png",
+        image: "/images/medipic/upgrade-products-rounded-v5/Menopause.png",
       },
     ],
   },
@@ -129,19 +128,24 @@ export const careProducts: CareProduct[] = [
     benefits: ["Acne and spots", "Brightening concerns", "Doctor-guided skin plan"],
     gallery: [
       {
+        name: "Tranexamic Acid",
+        caption: "Spot and dullness care",
+        image: "/images/medipic/upgrade-products-rounded-v5/Skincare1.png",
+      },
+      {
+        name: "Lumigan",
+        caption: "Targeted growth support",
+        image: "/images/medipic/upgrade-products-rounded-v5/Skincare2.png",
+      },
+      {
+        name: "Plus Restore",
+        caption: "Barrier-focused skincare",
+        image: "/images/medipic/upgrade-products-rounded-v5/Skincare3.png",
+      },
+      {
         name: "Cinal",
         caption: "Tone and clarity support",
-        image: "/images/medipic/sample/products/skin-cinal.png",
-      },
-      {
-        name: "Restore",
-        caption: "Barrier-focused skincare",
-        image: "/images/medipic/sample/products/skin-restore.png",
-      },
-      {
-        name: "Tranexamic",
-        caption: "Spot and dullness care",
-        image: "/images/medipic/sample/products/skin-tranexamic.png",
+        image: "/images/medipic/upgrade-products-rounded-v5/Skincare4.png",
       },
     ],
   },

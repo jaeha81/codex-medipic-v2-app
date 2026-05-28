@@ -100,28 +100,25 @@ body {
   background: var(--versed-mint-soft);
 }
 
-.product-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(17, 17, 17, 0.34) rgba(255, 255, 255, 0.48);
-  scrollbar-gutter: stable;
+.product-marquee {
+  --marquee-view: min(390px, calc(100vw - 40px));
+  background: transparent;
 }
 
-.product-scrollbar::-webkit-scrollbar {
-  height: 8px;
+.product-marquee-track {
+  will-change: transform;
 }
 
-.product-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.48);
-  border-radius: 999px;
+.product-marquee-track-compact {
+  animation: productMarqueeCompactRight 8s ease-in-out infinite alternate;
 }
 
-.product-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(17, 17, 17, 0.34);
-  border-radius: 999px;
+.product-marquee-track-wide {
+  animation: productMarqueeWideRight 18s ease-in-out infinite alternate;
 }
 
-.product-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(17, 17, 17, 0.52);
+.product-marquee:hover .product-marquee-track {
+  animation-play-state: paused;
 }
 
 button, a {
@@ -173,6 +170,14 @@ button:focus-visible {
 @keyframes productCarousel {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes productMarqueeCompactRight {
+  from { transform: translate3d(-18px, 0, 0); }
+  to { transform: translate3d(18px, 0, 0); }
+}
+@keyframes productMarqueeWideRight {
+  from { transform: translate3d(calc(-100% + var(--marquee-view)), 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 @keyframes productCardDrift {
   0%, 100% { transform: translate3d(0, 0, 0); }
